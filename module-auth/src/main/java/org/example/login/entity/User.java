@@ -1,16 +1,23 @@
 package org.example.login.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.login.constants.UserGrade;
 
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
 @Setter
-public class User {
+@NoArgsConstructor
+public class User extends BaseEntity {
 
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long id;
 
     private String password;
 
@@ -22,11 +29,8 @@ public class User {
 
     private int phone;
 
+    @Enumerated(EnumType.STRING)
     private UserGrade grade;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     public User(String password, String email, UserGrade grade) {
         this.password = password;
