@@ -4,7 +4,6 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: update  # (옵션: create, update, validate, none)
@@ -12,3 +11,7 @@ spring:
     properties:
       hibernate:
         format_sql: true  # SQL 예쁘게 출력
+  data:
+    redis:
+      host: localhost
+      port: 6379
