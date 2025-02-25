@@ -27,7 +27,7 @@ public record SignUpRequest(
         UserGrade grade) {
     // todo: address(좌표) 추가
 
-    public User toEntity() {
-        return new User(password, email, grade);
+    public User toEntity(String encodingPassword) {
+        return new User(encodingPassword, email, grade);
     }
 }
