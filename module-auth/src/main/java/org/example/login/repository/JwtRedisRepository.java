@@ -1,4 +1,7 @@
 package org.example.login.repository;
 
-public class JwtRedisRepository {
+public interface JwtRedisRepository {
+
+    void insert(String key, String jwt, long expire);
+
 }

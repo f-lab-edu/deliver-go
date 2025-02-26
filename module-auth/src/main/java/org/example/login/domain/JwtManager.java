@@ -1,5 +1,9 @@
 package org.example.login.domain;
 
+import static org.example.login.constants.JwtProperties.ACCESS_EXPIRE_MINUTE;
+import static org.example.login.constants.JwtProperties.REFRESH_EXPIRE_MINUTE;
+import static org.example.login.constants.JwtProperties.SECRET_KEY;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -16,22 +20,19 @@ public class JwtManager {
     private final SecretKey jwtKey;
 
     public JwtManager() {
-        jwtKey = Keys.hmacShaKeyFor(
-                Decoders.BASE64.decode("prnlpoyiASttohnKeansocleSitnIcseascackiSceebaTAeu"));
-
+        jwtKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
 
-
     public AuthTokens createAuthTokens(UserDto userDto) {
-        String accessToken = buildJwt(userDto, 5L);
-        String refreshToken = buildJwt(userDto, 60L);
+        String accessToken = buildJwt(userDto, ACCESS_EXPIRE_MINUTE);
+        String refreshToken = buildJwt(userDto, REFRESH_EXPIRE_MINUTE);
         return new AuthTokens(accessToken, refreshToken);
     }
 
     private String buildJwt(UserDto userDto, Long expireMinute) {
         Date date = new Date();
         return Jwts.builder()
-                .issuer("delevery-go")
+                .issuer("delivery-go")
                 .subject(String.valueOf(userDto.getId()))
                 .claim("email", userDto.getEmail())
                 .claim("name", userDto.getName())
