@@ -1,6 +1,15 @@
 package org.example.login.constants;
 
+import lombok.Getter;
+
+@Getter
 public enum UserGrade {
-    NORMAL,
-    OWNER
+    NORMAL("일반 사용자"),
+    OWNER("사장님");
+
+    private final String description;
+
+    UserGrade(String description) {
+        this.description = description;
+    }
 }

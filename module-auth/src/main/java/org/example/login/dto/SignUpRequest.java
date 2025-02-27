@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 import org.example.login.constants.UserGrade;
 import org.example.login.entity.User;
 
@@ -19,13 +20,15 @@ public record SignUpRequest(
         String password,
 
         @NotBlank
+        @Pattern(regexp = "^[^0-9]*$", message = "숫자는 입력할 수 없습니다.")
         String name,
 
         String phone,
 
+        String address,
+
         @NotNull
         UserGrade grade) {
-    // todo: address(좌표) 추가
 
     public User toEntity(String encodingPassword) {
         return new User(encodingPassword, email, grade);
