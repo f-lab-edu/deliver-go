@@ -1,5 +1,6 @@
 package org.example.login.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.login.dto.SignUpRequest;
 import org.example.login.entity.User;
@@ -14,6 +15,7 @@ public class SignUpServiceImpl implements SignUpService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     @Override
     public void signUp(SignUpRequest request) {
 
