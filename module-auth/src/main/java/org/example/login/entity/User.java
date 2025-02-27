@@ -3,14 +3,12 @@ package org.example.login.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.login.constants.UserGrade;
-
-import java.time.LocalDateTime;
+import org.example.login.dto.SignUpRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class User extends BaseEntity {
 
@@ -19,22 +17,37 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(nullable = false, length = 100)
     private String password;
 
+    @Column(nullable = false, length = 50)
     private String name;
 
+    @Column(nullable = false, unique = true, length = 320)
     private String email;
 
+    @Column(length = 255)
     private String address;
 
+    @Column(length = 15)
     private int phone;
 
     @Enumerated(EnumType.STRING)
     private UserGrade grade;
 
-    public User(String password, String email, UserGrade grade) {
+    private User(String password, String email, UserGrade grade) {
         this.password = password;
         this.email = email;
         this.grade = grade;
+    }
+
+    public static User ofEncrypt(PasswordEncoder passwordEncoder, SignUpRequest signUpRequest) {
+        return new User(encryptPassword(passwordEncoder, signUpRequest.password()),
+                signUpRequest.email(),
+                signUpRequest.grade());
+    }
+
+    private static String encryptPassword(PasswordEncoder passwordEncoder, String password) {
+        return passwordEncoder.encode(password);
     }
 }

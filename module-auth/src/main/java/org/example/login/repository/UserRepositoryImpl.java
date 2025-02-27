@@ -9,12 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository("userRepository")
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     @PersistenceContext
     private EntityManager em;
 
+    @Transactional
     @Override
     public Optional<User> findByEmail(String email) {
         try {
