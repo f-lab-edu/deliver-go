@@ -19,21 +19,23 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 20)
     private String password;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 320)
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
 
+    @Column(length = 50)
     private String address;
 
-    @Column(length = 15)
+    @Column(length = 11)
     private int phone;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 50)
     private UserGrade grade;
 
     private User(String password, String email, UserGrade grade, String name) {
