@@ -32,12 +32,4 @@ public class FieldErrorResponse {
                 .map(FieldErrorResponse::new)
                 .collect(Collectors.toList());
     }
-
-    public static FieldErrorResponse of(HttpMessageNotReadableException ex) {
-        if (ex.getCause() instanceof InvalidFormatException e) {
-            return new FieldErrorResponse("error-value", e.getValue().toString());
-        }
-
-        return new FieldErrorResponse("error-message", ex.getMessage());
-    }
 }
