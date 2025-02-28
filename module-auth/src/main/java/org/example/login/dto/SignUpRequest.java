@@ -32,6 +32,4 @@ public record SignUpRequest(
 
     @NotNull
     UserGrade grade) {
-
-
 }
