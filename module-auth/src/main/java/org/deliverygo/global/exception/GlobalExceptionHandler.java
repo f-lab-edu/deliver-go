@@ -27,6 +27,5 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ErrorResponse handleJsonParseException(HttpMessageNotReadableException ex) {
         return ErrorResponse.of(ex);
-
     }
 }
