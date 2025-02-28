@@ -1,10 +1,10 @@
-package org.example.login.service;
+package org.deliverygo.login.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.login.dto.SignUpRequest;
-import org.example.login.entity.User;
-import org.example.login.repository.UserRepository;
+import org.deliverygo.login.dto.SignUpRequest;
+import org.deliverygo.login.entity.User;
+import org.deliverygo.login.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

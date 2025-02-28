@@ -1,8 +1,8 @@
-package org.example.login.controller;
+package org.deliverygo.login.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.login.dto.SignUpRequest;
-import org.example.login.service.SignUpService;
+import org.deliverygo.login.dto.SignUpRequest;
+import org.deliverygo.login.service.SignUpService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

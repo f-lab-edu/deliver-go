@@ -5,7 +5,7 @@ plugins {
 }
 
 allprojects {
-    group = 'com.example'
+    group = 'com.deliverygo'
     version = '1.0.0'
 
     repositories {

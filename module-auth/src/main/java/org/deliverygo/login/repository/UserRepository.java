@@ -1,6 +1,6 @@
-package org.example.login.repository;
+package org.deliverygo.login.repository;
 
-import org.example.login.entity.User;
+import org.deliverygo.login.entity.User;
 
 import java.util.Optional;
 

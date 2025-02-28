@@ -5,7 +5,7 @@ plugins {
 }
 
 springBoot {
-    mainClass = 'org.example.MainApplication'
+    mainClass = 'org.deliverygo.MainApplication'
 }
 
 dependencies {

@@ -1,4 +1,4 @@
-package org.example.login.config;
+package org.deliverygo.login.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,10 +1,10 @@
-package org.example.login.entity;
+package org.deliverygo.login.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.login.constants.UserGrade;
-import org.example.login.dto.SignUpRequest;
+import org.deliverygo.login.constants.UserGrade;
+import org.deliverygo.login.dto.SignUpRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity

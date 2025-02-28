@@ -1,4 +1,4 @@
-package org.example.login.constants;
+package org.deliverygo.login.constants;
 
 import lombok.Getter;
 

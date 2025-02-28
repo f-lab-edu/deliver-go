@@ -1,11 +1,11 @@
-package org.example.login.dto;
+package org.deliverygo.login.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.example.login.constants.UserGrade;
+import org.deliverygo.login.constants.UserGrade;
 
 public record SignUpRequest(
 

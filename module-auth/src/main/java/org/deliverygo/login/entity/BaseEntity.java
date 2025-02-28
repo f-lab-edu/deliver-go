@@ -1,4 +1,4 @@
-package org.example.login.entity;
+package org.deliverygo.login.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

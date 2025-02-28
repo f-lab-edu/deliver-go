@@ -1,10 +1,10 @@
-package org.example.login.repository;
+package org.deliverygo.login.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import org.example.login.entity.User;
+import org.deliverygo.login.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
