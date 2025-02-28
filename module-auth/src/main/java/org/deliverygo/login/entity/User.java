@@ -36,16 +36,19 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserGrade grade;
 
-    private User(String password, String email, UserGrade grade) {
+    private User(String password, String email, UserGrade grade, String name) {
         this.password = password;
         this.email = email;
         this.grade = grade;
+        this.name = name;
     }
 
     public static User ofEncrypt(PasswordEncoder passwordEncoder, SignUpRequest signUpRequest) {
-        return new User(encryptPassword(passwordEncoder, signUpRequest.password()),
+        return new User(encryptPassword(passwordEncoder,
+                signUpRequest.password()),
                 signUpRequest.email(),
-                signUpRequest.grade());
+                signUpRequest.grade(),
+                signUpRequest.name());
     }
 
     private static String encryptPassword(PasswordEncoder passwordEncoder, String password) {
