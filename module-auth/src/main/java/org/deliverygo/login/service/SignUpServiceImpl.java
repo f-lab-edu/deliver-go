@@ -24,6 +24,6 @@ public class SignUpServiceImpl implements SignUpService {
                     throw new IllegalStateException("이미 가입된 이메일입니다.");
                 });
 
-        userRepository.register(User.ofEncrypt(passwordEncoder, request));
+        userRepository.save(User.ofEncrypt(passwordEncoder, request));
     }
 }
