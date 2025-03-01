@@ -27,8 +27,8 @@ public record SignUpRequest(
     @Size(min = 2, max = 20, message = "비밀번호는 8자 이상, 20자 이하로 입력해야 합니다.")
     String name,
 
-    @Size(min = 9, max = 11, message = "전화번호는 9자리 이상, 11자리 이하로 입력해야 합니다.")
-    int phone,
+    @Pattern(regexp = "^[0-9]{9,11}$", message = "전화번호는 숫자 9~11자리여야 합니다.")
+    String phone,
 
     @Size(min = 2, max = 50, message = "주소는 2자 이상, 50자 이하로 입력해야 합니다.")
     String address,

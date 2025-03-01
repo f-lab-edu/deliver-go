@@ -19,7 +19,7 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 256)
     private String password;
 
     @Column(nullable = false, length = 20)
