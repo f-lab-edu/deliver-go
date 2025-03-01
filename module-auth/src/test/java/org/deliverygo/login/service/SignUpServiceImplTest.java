@@ -1,6 +1,5 @@
 package org.deliverygo.login.service;
 
-import jakarta.transaction.Transactional;
 import org.deliverygo.MainApplication;
 import org.deliverygo.login.dto.SignUpRequest;
 import org.deliverygo.login.entity.User;
@@ -11,17 +10,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.deliverygo.login.constants.UserGrade.OWNER;
 
-@ActiveProfiles("test")
 @SpringBootTest(classes = MainApplication.class)
 @Transactional
 class SignUpServiceImplTest {
 
     @Autowired
-    SignUpServiceImpl signUpService;
+    SignUpService signUpService;
 
     @Autowired
     UserRepository userRepository;
