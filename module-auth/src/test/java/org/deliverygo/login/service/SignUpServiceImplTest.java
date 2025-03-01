@@ -21,13 +21,13 @@ import static org.deliverygo.login.constants.UserGrade.OWNER;
 class SignUpServiceImplTest {
 
     @Autowired
-    private SignUpServiceImpl  signUpService;
+    SignUpServiceImpl signUpService;
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
     @Test
     @DisplayName("회원이 없으면 회원가입에 성공한다.")
@@ -39,12 +39,12 @@ class SignUpServiceImplTest {
                 "01020893750",
                 "인천 서구 당하동",
                 OWNER);
+
         //when
         signUpService.signUp(signUpRequest);
-
-        //then
         User findUser = userRepository.findByEmail(signUpRequest.email()).orElseThrow();
 
+        //then
         Assertions.assertEquals(signUpRequest.email(), findUser.getEmail());
     }
 }
