@@ -11,6 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
+@Table(name = "users")
 @NoArgsConstructor
 public class User extends BaseEntity {
 
@@ -32,25 +33,28 @@ public class User extends BaseEntity {
     private String address;
 
     @Column(length = 11)
-    private int phone;
+    private String phone;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private UserGrade grade;
 
-    private User(String password, String email, UserGrade grade, String name) {
+    private User(String password, String name, String email, String address, String phone, UserGrade grade) {
         this.password = password;
-        this.email = email;
-        this.grade = grade;
         this.name = name;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+        this.grade = grade;
     }
 
     public static User ofEncrypt(PasswordEncoder passwordEncoder, SignUpRequest signUpRequest) {
-        return new User(encryptPassword(passwordEncoder,
-                signUpRequest.password()),
+        return new User(encryptPassword(passwordEncoder, signUpRequest.password()),
+                signUpRequest.name(),
                 signUpRequest.email(),
-                signUpRequest.grade(),
-                signUpRequest.name());
+                signUpRequest.address(),
+                signUpRequest.phone(),
+                signUpRequest.grade());
     }
 
     private static String encryptPassword(PasswordEncoder passwordEncoder, String password) {
