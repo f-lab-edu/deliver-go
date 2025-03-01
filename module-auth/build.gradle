@@ -5,4 +5,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'org.springframework.security:spring-security-crypto'
+    implementation 'com.h2database:h2'
+
+    testImplementation(project(":main-app"))
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
