@@ -22,7 +22,7 @@ public class LoginService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthTokens authenticateAndIssueTokens(LoginDto loginDto) {
+    public AuthTokens login(LoginDto loginDto) {
 
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow();
         user.verifyPassword(passwordEncoder, loginDto.getPassword());

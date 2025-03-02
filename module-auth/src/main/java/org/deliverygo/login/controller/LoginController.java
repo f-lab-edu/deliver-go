@@ -22,7 +22,7 @@ public class LoginController {
 
     @PostMapping("/auth/login")
     public void login(@Validated @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        AuthTokens authTokens = loginService.authenticateAndIssueTokens(LoginDto.of(loginRequest));
+        AuthTokens authTokens = loginService.login(LoginDto.of(loginRequest));
 
         response.setHeader(HttpHeaders.AUTHORIZATION, authTokens.accessToken());
         response.setHeader("refresh-token", authTokens.refreshToken());
