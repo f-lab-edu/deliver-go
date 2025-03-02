@@ -30,7 +30,6 @@ class SignUpServiceImplTest {
     @Test
     @DisplayName("회원이 없으면 회원가입에 성공한다.")
     void userIsNotExistThenSignUpSuccess() {
-        //given
         SignUpRequest signUpRequest = new SignUpRequest("js.min@google.com",
                 "11112222",
                 "민장식",
@@ -38,11 +37,9 @@ class SignUpServiceImplTest {
                 "인천 서구 당하동",
                 OWNER);
 
-        //when
         signUpService.signUp(signUpRequest);
         User findUser = userRepository.findByEmail(signUpRequest.email()).orElseThrow();
 
-        //then
         Assertions.assertEquals(signUpRequest.email(), findUser.getEmail());
     }
 }
