@@ -5,10 +5,10 @@ plugins {
 }
 
 springBoot {
-    mainClass = 'org.example.MainApplication'
+    mainClass = 'org.deliverygo.MainApplication'
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation project(':module-auth')   // 서브 모듈 추가
+    implementation project(':module-auth')
 }

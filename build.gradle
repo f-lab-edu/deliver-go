@@ -5,7 +5,7 @@ plugins {
 }
 
 allprojects {
-    group = 'com.example'
+    group = 'com.deliverygo'
     version = '1.0.0'
 
     repositories {
@@ -21,7 +21,7 @@ subprojects {
     dependencies {
         testImplementation platform('org.junit:junit-bom:5.10.0')
         testImplementation 'org.junit.jupiter:junit-jupiter'
-        implementation 'org.projectlombok:lombok:1.18.30' // Lombok 추가
+        implementation 'org.projectlombok:lombok:1.18.30'
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
 
@@ -33,6 +33,3 @@ subprojects {
         useJUnitPlatform()
     }
 }
-
-
-
