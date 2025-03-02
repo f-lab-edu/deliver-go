@@ -1,12 +1,14 @@
 package org.deliverygo.login.service;
 
 import lombok.RequiredArgsConstructor;
-import org.deliverygo.login.domain.JwtManager;
-import org.deliverygo.login.domain.LoginAuthenticator;
+import org.deliverygo.global.jwt.JwtManager;
 import org.deliverygo.login.dto.AuthTokens;
-import org.deliverygo.login.dto.LoginRequest;
+import org.deliverygo.login.dto.LoginDto;
 import org.deliverygo.login.dto.UserDto;
-import org.deliverygo.login.repository.JwtRedisRepository;
+import org.deliverygo.login.entity.User;
+import org.deliverygo.login.repository.JwtRepository;
+import org.deliverygo.login.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static org.deliverygo.login.constants.JwtProperties.REFRESH_EXPIRE_MINUTE;
@@ -15,17 +17,20 @@ import static org.deliverygo.login.constants.JwtProperties.REFRESH_EXPIRE_MINUTE
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final LoginAuthenticator loginAuthenticator;
     private final JwtManager jwtManager;
-    private final JwtRedisRepository jwtRedisRepository;
+    private final JwtRepository jwtRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthTokens authenticateAndIssueTokens(LoginRequest loginRequest) {
+    public AuthTokens authenticateAndIssueTokens(LoginDto loginDto) {
 
-        UserDto userDto = loginAuthenticator.authenticate(loginRequest);
+        User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow();
+        user.verifyPassword(passwordEncoder, loginDto.getPassword());
 
+        UserDto userDto = UserDto.of(user);
         AuthTokens authTokens = jwtManager.createAuthTokens(userDto);
 
-        jwtRedisRepository.insert(String.valueOf(userDto.getId()), authTokens.refreshToken(), REFRESH_EXPIRE_MINUTE);
+        jwtRepository.insert(String.valueOf(userDto.getId()), authTokens.refreshToken(), REFRESH_EXPIRE_MINUTE);
 
         return authTokens;
     }

@@ -3,6 +3,7 @@ package org.deliverygo.login.controller;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.deliverygo.login.dto.AuthTokens;
+import org.deliverygo.login.dto.LoginDto;
 import org.deliverygo.login.dto.LoginRequest;
 import org.deliverygo.login.service.LoginService;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +22,7 @@ public class LoginController {
 
     @PostMapping("/auth/login")
     public void login(@Validated @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        AuthTokens authTokens = loginService.authenticateAndIssueTokens(loginRequest);
+        AuthTokens authTokens = loginService.authenticateAndIssueTokens(LoginDto.of(loginRequest));
 
         response.setHeader(HttpHeaders.AUTHORIZATION, authTokens.accessToken());
         response.setHeader("refresh-token", authTokens.refreshToken());

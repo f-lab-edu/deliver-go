@@ -57,4 +57,10 @@ public class User extends BaseEntity {
                 signUpRequest.phone(),
                 signUpRequest.grade());
     }
+
+    public void verifyPassword(PasswordEncoder passwordEncoder, String requestPassword) {
+        if(!passwordEncoder.matches(requestPassword, password)) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
+    }
 }

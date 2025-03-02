@@ -1,4 +1,4 @@
-package org.deliverygo.login.domain;
+package org.deliverygo.global.jwt;
 
 import static org.deliverygo.login.constants.JwtProperties.ACCESS_EXPIRE_MINUTE;
 import static org.deliverygo.login.constants.JwtProperties.REFRESH_EXPIRE_MINUTE;
