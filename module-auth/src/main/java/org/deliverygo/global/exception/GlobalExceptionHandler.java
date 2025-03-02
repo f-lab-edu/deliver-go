@@ -14,18 +14,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalStateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleIllegalStateException(IllegalStateException ex) {
-        return ErrorResponse.of(ex.getMessage());
+    public ApiResponse<ErrorResponse> handleIllegalStateException(IllegalStateException ex) {
+        return ApiResponse.error(ErrorResponse.of(ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<FieldErrorResponse> handleBindException(MethodArgumentNotValidException ex) {
-        return FieldErrorResponse.of(ex);
+    public ApiResponse<List<FieldErrorResponse>> handleBindException(MethodArgumentNotValidException ex) {
+        return ApiResponse.error(FieldErrorResponse.of(ex));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ErrorResponse handleJsonParseException(HttpMessageNotReadableException ex) {
-        return ErrorResponse.of(ex);
+    public ApiResponse<ErrorResponse> handleJsonParseException(HttpMessageNotReadableException ex) {
+        return ApiResponse.error(ErrorResponse.of(ex.getMessage()));
     }
 }
