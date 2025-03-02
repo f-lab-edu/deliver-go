@@ -1,6 +1,7 @@
 package org.deliverygo.login.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.deliverygo.login.constants.UserGrade;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Table(name = "users")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
     @Id
