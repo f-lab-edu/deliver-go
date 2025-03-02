@@ -49,7 +49,7 @@ public class User extends BaseEntity {
     }
 
     public static User ofEncrypt(PasswordEncoder passwordEncoder, SignUpRequest signUpRequest) {
-        return new User(encryptPassword(passwordEncoder, signUpRequest.password()),
+        return new User(passwordEncoder.encode(signUpRequest.password()),
                 signUpRequest.name(),
                 signUpRequest.email(),
                 signUpRequest.address(),
@@ -57,15 +57,11 @@ public class User extends BaseEntity {
                 signUpRequest.grade());
     }
 
-    private static String encryptPassword(PasswordEncoder passwordEncoder, String password) {
-        return passwordEncoder.encode(password);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return getPhone() == user.getPhone() &&
+        return Objects.equals(getPhone(), user.getPhone()) &&
                 Objects.equals(getId(), user.getId()) &&
                 Objects.equals(getPassword(), user.getPassword()) &&
                 Objects.equals(getName(), user.getName()) &&
