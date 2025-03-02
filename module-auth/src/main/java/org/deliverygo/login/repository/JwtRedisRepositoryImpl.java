@@ -1,6 +1,6 @@
-package org.example.login.repository;
+package org.deliverygo.login.repository;
 
-import static org.example.login.constants.JwtProperties.KEY_PREFIX;
+import static org.deliverygo.login.constants.JwtProperties.KEY_PREFIX;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,5 +15,4 @@ public class JwtRedisRepositoryImpl implements JwtRedisRepository {
     public void insert(String key, String jwt, long expire) {
         redisTemplate.opsForValue().set(KEY_PREFIX + key, jwt, expire);
     }
-
 }

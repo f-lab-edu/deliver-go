@@ -1,6 +1,7 @@
-package org.example.login.dto;
+package org.deliverygo.login.dto;
 
-public record AuthTokens (
+public record AuthTokens(
+
         String accessToken,
         String refreshToken
 ) {

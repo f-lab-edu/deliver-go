@@ -1,14 +1,14 @@
-package org.example.login.domain;
+package org.deliverygo.login.domain;
 
-import static org.example.login.constants.JwtProperties.ACCESS_EXPIRE_MINUTE;
-import static org.example.login.constants.JwtProperties.REFRESH_EXPIRE_MINUTE;
-import static org.example.login.constants.JwtProperties.SECRET_KEY;
+import static org.deliverygo.login.constants.JwtProperties.ACCESS_EXPIRE_MINUTE;
+import static org.deliverygo.login.constants.JwtProperties.REFRESH_EXPIRE_MINUTE;
+import static org.deliverygo.login.constants.JwtProperties.SECRET_KEY;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.example.login.dto.AuthTokens;
-import org.example.login.dto.UserDto;
+import org.deliverygo.login.dto.AuthTokens;
+import org.deliverygo.login.dto.UserDto;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;

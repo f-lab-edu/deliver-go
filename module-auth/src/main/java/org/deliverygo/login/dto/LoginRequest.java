@@ -1,4 +1,4 @@
-package org.example.login.dto;
+package org.deliverygo.login.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -10,5 +10,4 @@ public record LoginRequest(
     @NotBlank
     String password
 ) {
-
 }

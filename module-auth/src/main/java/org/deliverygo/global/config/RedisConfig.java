@@ -1,4 +1,4 @@
-package org.example.global.config;
+package org.deliverygo.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
