@@ -38,9 +38,11 @@ class LoginServiceTest {
 
         JwtTokenDto jwtTokenDto = loginService.login(loginDto);
 
-        JwtToken jwtToken = JwtToken.of(jwtTokenDto.getAccessToken());
+        JwtToken accessToken = JwtToken.of(jwtTokenDto.getAccessToken());
+        JwtToken refreshToken = JwtToken.of(jwtTokenDto.getAccessToken());
 
-        Assertions.assertEquals(signUpRequest.email(), jwtToken.extractEmail());
+        Assertions.assertEquals(signUpRequest.email(), accessToken.extractEmail());
+        Assertions.assertEquals(signUpRequest.email(), refreshToken.extractEmail());
     }
 
     @Test
