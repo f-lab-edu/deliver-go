@@ -2,7 +2,7 @@ package org.deliverygo.login.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.deliverygo.login.dto.AuthTokens;
+import org.deliverygo.login.dto.JwtTokenDto;
 import org.deliverygo.login.dto.LoginDto;
 import org.deliverygo.login.dto.LoginRequest;
 import org.deliverygo.login.service.LoginService;
@@ -22,9 +22,9 @@ public class LoginController {
 
     @PostMapping("/auth/login")
     public void login(@Validated @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        AuthTokens authTokens = loginService.login(LoginDto.of(loginRequest));
+        JwtTokenDto jwtTokenDto = loginService.login(LoginDto.of(loginRequest));
 
-        response.setHeader(HttpHeaders.AUTHORIZATION, authTokens.accessToken());
-        response.setHeader("refresh-token", authTokens.refreshToken());
+        response.setHeader(HttpHeaders.AUTHORIZATION, jwtTokenDto.getAccessToken());
+        response.setHeader("refresh-token", jwtTokenDto.getRefreshToken());
     }
 }
