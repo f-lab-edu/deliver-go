@@ -19,6 +19,7 @@ public class JwtToken {
     private static final String SECRET_KEY = "prnlpoyiASttohnKeansocleSitnIcseascackiSceebaTAeu";
     private static final SecretKey KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     private final String token;
+    private Claims claims;
 
     private JwtToken(String token) {
         this.token = token;
@@ -55,10 +56,13 @@ public class JwtToken {
     }
 
     private Claims extractClaims() {
-        return Jwts.parser()
-                .verifyWith(KEY)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        if (claims == null) {
+            claims = Jwts.parser()
+                    .verifyWith(KEY)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        }
+        return claims;
     }
 }
