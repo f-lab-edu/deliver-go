@@ -1,0 +1,35 @@
+plugins {
+    id 'org.springframework.boot' version '3.4.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+}
+
+allprojects {
+    group = 'com.deliverygo'
+    version = '1.0.0'
+
+    repositories {
+        mavenCentral() // Spring Boot 의존성을 다운로드하기 위해 필요
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencies {
+        testImplementation platform('org.junit:junit-bom:5.10.0')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        implementation 'org.projectlombok:lombok:1.18.30'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

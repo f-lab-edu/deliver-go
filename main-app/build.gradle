@@ -1,0 +1,14 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'java'
+}
+
+springBoot {
+    mainClass = 'org.deliverygo.MainApplication'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation project(':module-auth')
+}
