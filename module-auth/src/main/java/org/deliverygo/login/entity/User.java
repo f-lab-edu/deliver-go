@@ -49,17 +49,27 @@ public class User extends BaseEntity {
         this.grade = grade;
     }
 
+    public static User of(PasswordEncoder passwordEncoder, String password, String name, String email, String address,
+                          String phone, UserGrade grade) {
+        return new User(passwordEncoder.encode(password), name, email, address, phone, grade);
+    }
+
+    public static User of(String password, String name, String email, String address,
+                          String phone, UserGrade grade) {
+        return new User(password, name, email, address, phone, grade);
+    }
+
     public static User ofEncrypt(PasswordEncoder passwordEncoder, SignUpRequest signUpRequest) {
         return new User(passwordEncoder.encode(signUpRequest.password()),
-                signUpRequest.name(),
-                signUpRequest.email(),
-                signUpRequest.address(),
-                signUpRequest.phone(),
-                signUpRequest.grade());
+            signUpRequest.name(),
+            signUpRequest.email(),
+            signUpRequest.address(),
+            signUpRequest.phone(),
+            signUpRequest.grade());
     }
 
     public void verifyPassword(PasswordEncoder passwordEncoder, String requestPassword) {
-        if(!passwordEncoder.matches(requestPassword, password)) {
+        if (!passwordEncoder.matches(requestPassword, password)) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
     }

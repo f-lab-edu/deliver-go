@@ -1,0 +1,35 @@
+package org.deliverygo.restaurant.dto;
+
+
+import org.deliverygo.restaurant.constants.RestaurantStatus;
+import lombok.Getter;
+
+import static org.deliverygo.restaurant.constants.RestaurantStatus.CLOSE;
+import static org.deliverygo.restaurant.constants.RestaurantStatus.OPEN;
+
+@Getter
+public class RestaurantDto {
+
+    private final String name;
+
+    private final String address;
+
+    private final String phone;
+
+    private final RestaurantStatus status;
+
+    private RestaurantDto(String name, String address, String phone, RestaurantStatus status) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.status = status;
+    }
+
+    public static RestaurantDto ofOpen(RestaurantSaveRequest request) {
+        return new RestaurantDto(request.getName(), request.getAddress(), request.getPhone(), OPEN);
+    }
+
+    public static RestaurantDto ofClose(RestaurantSaveRequest request) {
+        return new RestaurantDto(request.getName(), request.getAddress(), request.getPhone(), CLOSE);
+    }
+}
