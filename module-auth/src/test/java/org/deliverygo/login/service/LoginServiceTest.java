@@ -42,12 +42,14 @@ class LoginServiceTest {
 
     User user;
 
+    String email;
     String originPassword;
 
     @BeforeEach
     void setUp() {
         originPassword = "11112222";
-        user = User.ofEncrypt(passwordEncoder, originPassword, "민장식", "js.min@hansol.com",
+        email = "js.min@test.com";
+        user = User.ofEncrypt(passwordEncoder, originPassword, "민장식", email,
             "01011112222", "인천 서구 당하동", OWNER);
         userRepository.save(user);
     }
@@ -77,7 +79,8 @@ class LoginServiceTest {
     @Test
     @DisplayName("계정 없을 시, 로그인 실패")
     void loginWhenAccountNotFoundThenThrowException() {
-        LoginDto loginDto = LoginDto.of("jsggegws@hansol.com", user.getPassword());
+        userRepository.findByEmail(email).ifPresent(userRepository::delete);
+        LoginDto loginDto = LoginDto.of(email, user.getPassword());
 
         Assertions.assertThrows(NoSuchElementException.class, () -> loginService.login(loginDto));
     }
