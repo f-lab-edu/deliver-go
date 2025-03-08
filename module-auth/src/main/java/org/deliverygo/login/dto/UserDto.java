@@ -36,4 +36,8 @@ public class UserDto {
                 user.getPhone(),
                 user.getGrade());
     }
+
+    public static UserDto of(long id, String name, String email, String address, String phone, UserGrade grade) {
+        return new UserDto(id, name, email, address, phone, grade);
+    }
 }

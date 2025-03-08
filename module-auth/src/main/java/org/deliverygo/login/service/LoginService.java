@@ -11,6 +11,8 @@ import org.deliverygo.login.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 import static org.deliverygo.login.domain.JwtToken.REFRESH_EXPIRE_MINUTE;
 
 @Service
@@ -27,8 +29,10 @@ public class LoginService {
         user.verifyPassword(passwordEncoder, loginDto.getPassword());
 
         UserDto userDto = UserDto.of(user);
-        JwtToken accessToken = JwtToken.ofAccessToken(userDto);
-        JwtToken refreshToken = JwtToken.ofRefreshToken(userDto);
+
+        Date date = new Date();
+        JwtToken accessToken = JwtToken.ofAccessToken(userDto, date);
+        JwtToken refreshToken = JwtToken.ofRefreshToken(userDto, date);
 
         jwtRepository.insertJwt(String.valueOf(userDto.getId()), refreshToken.getToken(), REFRESH_EXPIRE_MINUTE);
 
