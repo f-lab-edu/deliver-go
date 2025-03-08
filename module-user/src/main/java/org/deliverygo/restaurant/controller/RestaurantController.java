@@ -23,7 +23,7 @@ public class RestaurantController {
                          @RequestHeader(name = HttpHeaders.AUTHORIZATION) String accessToken) {
         JwtToken jwtToken = JwtToken.of(accessToken);
         if (jwtToken.extractGrade() != OWNER) {
-            throw new IllegalArgumentException("사장님만 음식점을 등록할 수 있습니다.");
+            throw new IllegalStateException("사장님만 음식점을 등록할 수 있습니다.");
         }
 
         restaurantService.register(RestaurantDto.of(restaurantSaveRequest), Long.valueOf(jwtToken.extractUserId()));
