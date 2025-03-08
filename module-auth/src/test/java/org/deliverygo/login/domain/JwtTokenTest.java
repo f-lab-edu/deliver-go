@@ -1,57 +1,79 @@
 package org.deliverygo.login.domain;
 
-import org.deliverygo.login.constants.UserGrade;
-import org.deliverygo.login.dto.SignUpRequest;
-import org.deliverygo.login.dto.UserDto;
-import org.deliverygo.login.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.deliverygo.login.constants.UserGrade.NORMAL;
-import static org.deliverygo.login.constants.UserGrade.OWNER;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import javax.crypto.SecretKey;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
 
-@ExtendWith(MockitoExtension.class)
 class JwtTokenTest {
 
-    @Mock
-    PasswordEncoder passwordEncoder;
+    String SECRET_KEY = "prnlpoyiASttohnKeansocleSitnIcseascackiSceebaTAeu";
+    SecretKey KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
 
     @Test
-    @DisplayName("jwt 에서 grade 값이 OWNER 이면 성공")
-    void test1() {
-        SignUpRequest signUpRequest = createGradeRequest(OWNER);
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-        User user = User.ofEncrypt(passwordEncoder, signUpRequest);
-        JwtToken accessToken = JwtToken.ofAccessToken(UserDto.of(user));
+    @DisplayName("jwt expire 만료 시간 유효한 경우 jwt 접근 성공")
+    void jwt() {
+        Clock fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+        Date date = Date.from(fixedClock.instant());
+        long expireMinute = 1L;
 
-        assertEquals(OWNER, accessToken.extractGrade());
+        String token = buildJwt(date, expireMinute);
+
+        Assertions.assertEquals(Boolean.FALSE, isTokenExpired(token, createFixedPlusClock(fixedClock, 30)));
+        Assertions.assertEquals(Boolean.FALSE, isTokenExpired(token, createFixedPlusClock(fixedClock, 50)));
+        Assertions.assertEquals(Boolean.FALSE, isTokenExpired(token, createFixedPlusClock(fixedClock, 39)));
     }
 
     @Test
-    @DisplayName("jwt 에서 grade 값이 OWNER 가 아니면 실패")
-    void test2() {
-        SignUpRequest signUpRequest = createGradeRequest(NORMAL);
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-        User user = User.ofEncrypt(passwordEncoder, signUpRequest);
-        JwtToken accessToken = JwtToken.ofAccessToken(UserDto.of(user));
+    @DisplayName("jwt expire 만료 시간 지난 경우 jwt 접근 실패")
+    void jwt1() {
+        Clock fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+        Date date = Date.from(fixedClock.instant());
+        long expireMinute = 1L;
 
-        Assertions.assertNotEquals(OWNER, accessToken.extractGrade());
+        String token = buildJwt(date, expireMinute);
+
+        Assertions.assertEquals(Boolean.TRUE, isTokenExpired(token, createFixedPlusClock(fixedClock, 65)));
+        Assertions.assertEquals(Boolean.TRUE, isTokenExpired(token, createFixedPlusClock(fixedClock, 100)));
     }
 
-    private SignUpRequest createGradeRequest(UserGrade grade) {
-        return new SignUpRequest("js.min",
-                "5757575"
-                , "js.min"
-                , "01122223333"
-                , "강남구청"
-                , grade);
+    private String buildJwt(Date date, long expireMinute) {
+        return Jwts.builder()
+            .issuer("delivery-go")
+            .subject(String.valueOf("testId"))
+            .claim("email", "testEmail")
+            .claim("name", "testName")
+            .claim("grade", "OWNER")
+            .issuedAt(date)
+            .expiration(new Date((date.getTime() + (expireMinute * 1000 * 60))))
+            .signWith(KEY)
+            .compact();
+    }
+
+    private boolean isTokenExpired(String token, Clock clock) {
+        try {
+            Claims claims = Jwts.parser()
+                .verifyWith(KEY)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+            return claims.getExpiration().before(Date.from(clock.instant()));
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
+    }
+
+    private Clock createFixedPlusClock(Clock clock, int secondsToAdd) {
+        return Clock.fixed(clock.instant().plusSeconds(secondsToAdd), ZoneId.systemDefault());
     }
 }

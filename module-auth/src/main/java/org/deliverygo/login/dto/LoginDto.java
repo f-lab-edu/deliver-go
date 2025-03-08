@@ -13,6 +13,10 @@ public class LoginDto {
         this.password = password;
     }
 
+    public static LoginDto of(String email, String password) {
+        return new LoginDto(email, password);
+    }
+
     public static LoginDto of(LoginRequest loginRequest) {
         return new LoginDto(loginRequest.email(), loginRequest.password());
     }

@@ -30,7 +30,7 @@ public class LoginService {
         JwtToken accessToken = JwtToken.ofAccessToken(userDto);
         JwtToken refreshToken = JwtToken.ofRefreshToken(userDto);
 
-        jwtRepository.insert(String.valueOf(userDto.getId()), refreshToken.getToken(), REFRESH_EXPIRE_MINUTE);
+        jwtRepository.insertJwt(String.valueOf(userDto.getId()), refreshToken.getToken(), REFRESH_EXPIRE_MINUTE);
 
         return JwtTokenDto.of(accessToken.getToken(), refreshToken.getToken());
     }
