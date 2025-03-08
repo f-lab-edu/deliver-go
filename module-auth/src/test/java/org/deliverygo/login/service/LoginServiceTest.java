@@ -57,7 +57,7 @@ class LoginServiceTest {
     @Test
     @DisplayName("이메일과 비밀번호가 일치하면 로그인 성공")
     void loginWhenValidCredentialsThenSuccess() {
-        doNothing().when(jwtRepository).insert(anyString(), anyString(), anyLong());
+        doNothing().when(jwtRepository).insertJwt(anyString(), anyString(), anyLong());
 
         JwtTokenDto jwtTokenDto = loginService.login(LoginDto.of(user.getEmail(), originPassword));
 
