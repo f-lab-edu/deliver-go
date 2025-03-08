@@ -29,6 +29,6 @@ public class RestaurantDto {
     }
 
     public static RestaurantDto of(RestaurantSaveRequest request) {
-        return new RestaurantDto(request.getName(), request.getAddress(), request.getPhone(), CLOSE);
+        return new RestaurantDto(request.name(), request.address(), request.phone(), CLOSE);
     }
 }
