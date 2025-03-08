@@ -5,7 +5,6 @@ import org.deliverygo.restaurant.constants.RestaurantStatus;
 import lombok.Getter;
 
 import static org.deliverygo.restaurant.constants.RestaurantStatus.CLOSE;
-import static org.deliverygo.restaurant.constants.RestaurantStatus.OPEN;
 
 @Getter
 public class RestaurantDto {
