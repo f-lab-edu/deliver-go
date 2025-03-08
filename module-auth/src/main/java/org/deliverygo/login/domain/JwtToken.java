@@ -1,6 +1,7 @@
 package org.deliverygo.login.domain;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import org.deliverygo.login.dto.UserDto;
 
 import javax.crypto.SecretKey;
+import java.time.Clock;
 import java.util.Date;
 
 @Getter
@@ -29,26 +31,33 @@ public class JwtToken {
         return new JwtToken(token);
     }
 
-    public static JwtToken ofAccessToken(UserDto userDto) {
-        return new JwtToken(buildJwt(userDto, ACCESS_EXPIRE_MINUTE));
+    public static JwtToken ofAccessToken(UserDto userDto, Date date) {
+        return new JwtToken(buildJwt(userDto, date, ACCESS_EXPIRE_MINUTE));
     }
 
-    public static JwtToken ofRefreshToken(UserDto userDto) {
-        return new JwtToken(buildJwt(userDto, REFRESH_EXPIRE_MINUTE));
+    public static JwtToken ofRefreshToken(UserDto userDto, Date date) {
+        return new JwtToken(buildJwt(userDto, date, REFRESH_EXPIRE_MINUTE));
     }
 
-    private static String buildJwt(UserDto userDto, Long expireMinute) {
-        Date date = new Date();
-        return Jwts.builder()
-                .issuer("delivery-go")
-                .subject(String.valueOf(userDto.getId()))
-                .claim("email", userDto.getEmail())
-                .claim("name", userDto.getName())
-                .claim("grade", userDto.getGrade())
-                .issuedAt(date)
-                .expiration(new Date((date.getTime() + (expireMinute * 1000 * 60))))
-                .signWith(KEY)
-                .compact();
+    public static JwtToken ofAccessToken(UserDto userDto, Date date, long expire) {
+        return new JwtToken(buildJwt(userDto, date, expire));
+    }
+
+    public static JwtToken ofRefreshToken(UserDto userDto, Date date, long expire) {
+        return new JwtToken(buildJwt(userDto, date, expire));
+    }
+
+    public boolean isExpired(String token, Clock clock) {
+        try {
+            Claims claims = Jwts.parser()
+                .verifyWith(KEY)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+            return claims.getExpiration().before(Date.from(clock.instant()));
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
     }
 
     public String extractEmail() {
@@ -58,11 +67,24 @@ public class JwtToken {
     private Claims extractClaims() {
         if (claims == null) {
             claims = Jwts.parser()
-                    .verifyWith(KEY)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+                .verifyWith(KEY)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
         }
         return claims;
+    }
+
+    private static String buildJwt(UserDto userDto, Date date, long expireMinute) {
+        return Jwts.builder()
+            .issuer("delivery-go")
+            .subject(String.valueOf(userDto.getId()))
+            .claim("email", userDto.getEmail())
+            .claim("name", userDto.getName())
+            .claim("grade", userDto.getGrade())
+            .issuedAt(date)
+            .expiration(new Date((date.getTime() + (expireMinute * 1000 * 60))))
+            .signWith(KEY)
+            .compact();
     }
 }
