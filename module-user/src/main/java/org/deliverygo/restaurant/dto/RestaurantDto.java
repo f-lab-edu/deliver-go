@@ -25,11 +25,11 @@ public class RestaurantDto {
         this.status = status;
     }
 
-    public static RestaurantDto ofOpen(RestaurantSaveRequest request) {
-        return new RestaurantDto(request.getName(), request.getAddress(), request.getPhone(), OPEN);
+    public static RestaurantDto of(String name, String address, String phone) {
+        return new RestaurantDto(name, address, phone, CLOSE);
     }
 
-    public static RestaurantDto ofClose(RestaurantSaveRequest request) {
+    public static RestaurantDto of(RestaurantSaveRequest request) {
         return new RestaurantDto(request.getName(), request.getAddress(), request.getPhone(), CLOSE);
     }
 }

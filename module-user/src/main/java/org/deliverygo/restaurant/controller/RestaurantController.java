@@ -27,6 +27,6 @@ public class RestaurantController {
         if (jwtToken.extractGrade() != OWNER) {
             throw new IllegalArgumentException("사장님만 음식점을 등록할 수 있습니다.");
         }
-        restaurantService.register(RestaurantDto.ofClose(restaurantSaveRequest), Long.valueOf(jwtToken.extractUserId()));
+        restaurantService.register(RestaurantDto.of(restaurantSaveRequest), Long.valueOf(jwtToken.extractUserId()));
     }
 }
