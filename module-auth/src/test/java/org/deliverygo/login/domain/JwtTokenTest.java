@@ -11,7 +11,9 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 
+import static org.deliverygo.login.constants.UserGrade.NORMAL;
 import static org.deliverygo.login.constants.UserGrade.OWNER;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JwtTokenTest {
 
@@ -33,9 +35,9 @@ class JwtTokenTest {
         JwtToken jwtToken = JwtToken.ofAccessToken(userDto, date, 1L);
         String token = jwtToken.getToken();
 
-        Assertions.assertEquals(Boolean.FALSE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 30)));
-        Assertions.assertEquals(Boolean.FALSE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 50)));
-        Assertions.assertEquals(Boolean.FALSE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 39)));
+        assertEquals(Boolean.FALSE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 30)));
+        assertEquals(Boolean.FALSE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 50)));
+        assertEquals(Boolean.FALSE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 39)));
     }
 
     @Test
@@ -46,8 +48,29 @@ class JwtTokenTest {
         JwtToken jwtToken = JwtToken.ofAccessToken(userDto, date, 1L);
         String token = jwtToken.getToken();
 
-        Assertions.assertEquals(Boolean.TRUE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 65)));
-        Assertions.assertEquals(Boolean.TRUE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 100)));
+        assertEquals(Boolean.TRUE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 65)));
+        assertEquals(Boolean.TRUE, jwtToken.isExpired(token, createFixedPlusClock(fixedClock, 100)));
+    }
+
+    @Test
+    @DisplayName("jwt 에서 grade 값이 OWNER 이면 성공")
+    void extractGradeWhenOwner() {
+        userDto = UserDto.of(1L, "testName", "testEmail", "testAddress", "testPhone",
+            OWNER);
+        JwtToken jwtToken = JwtToken.ofAccessToken(userDto, new Date(), 1L);
+
+        assertEquals(OWNER, jwtToken.extractGrade());
+    }
+
+    @Test
+    @DisplayName("jwt 에서 grade 값이 OWNER 가 아니면 실패")
+    void extractGradeWhenNotOwner() {
+        userDto = UserDto.of(1L, "testName", "testEmail", "testAddress", "testPhone",
+            NORMAL);
+
+        JwtToken jwtToken = JwtToken.ofAccessToken(userDto, new Date(), 1L);
+
+        Assertions.assertNotEquals(OWNER, jwtToken.extractGrade());
     }
 
     private Clock createFixedPlusClock(Clock clock, int secondsToAdd) {
