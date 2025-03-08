@@ -22,7 +22,7 @@ class JwtTokenTest {
 
     @Test
     @DisplayName("jwt expire 만료 시간 유효한 경우 jwt 접근 성공")
-    void jwt() {
+    void jwtNotExpiredSuccess() {
         Clock fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
         Date date = Date.from(fixedClock.instant());
         long expireMinute = 1L;
@@ -36,7 +36,7 @@ class JwtTokenTest {
 
     @Test
     @DisplayName("jwt expire 만료 시간 지난 경우 jwt 접근 실패")
-    void jwt1() {
+    void jwtExpiredFail() {
         Clock fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
         Date date = Date.from(fixedClock.instant());
         long expireMinute = 1L;
