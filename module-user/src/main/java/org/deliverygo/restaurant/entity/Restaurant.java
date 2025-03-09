@@ -2,12 +2,17 @@ package org.deliverygo.restaurant.entity;
 
 import lombok.NoArgsConstructor;
 import org.deliverygo.restaurant.constants.RestaurantStatus;
+import org.deliverygo.restaurant.dto.MenuDto;
 import org.deliverygo.restaurant.dto.RestaurantDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.deliverygo.login.entity.BaseEntity;
 import org.deliverygo.login.entity.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
@@ -35,6 +40,9 @@ public class Restaurant extends BaseEntity {
     @JoinColumn(name = "owner_id")
     private User owner;
 
+    @OneToMany(mappedBy = "restaurant", fetch = LAZY, cascade = ALL)
+    private List<Menu> menus = new ArrayList<>();
+
     @Enumerated(STRING)
     private RestaurantStatus status;
 
@@ -47,10 +55,21 @@ public class Restaurant extends BaseEntity {
     }
 
     public static Restaurant of(RestaurantDto restaurantDto, User owner) {
-        return new Restaurant(restaurantDto.getName(),
+        Restaurant restaurant = new Restaurant(restaurantDto.getName(),
             restaurantDto.getAddress(),
             restaurantDto.getPhone(),
             owner,
             restaurantDto.getStatus());
+
+        for (MenuDto menuDto : restaurantDto.getMenus()) {
+            restaurant.addMenus(Menu.ofUse(menuDto));
+        }
+
+        return restaurant;
+    }
+
+    public void addMenus(Menu menu) {
+        this.menus.add(menu);
+        menu.setRestaurant(this);
     }
 }

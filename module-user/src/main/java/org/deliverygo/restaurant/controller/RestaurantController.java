@@ -3,7 +3,7 @@ package org.deliverygo.restaurant.controller;
 import lombok.RequiredArgsConstructor;
 import org.deliverygo.login.domain.JwtToken;
 import org.deliverygo.restaurant.dto.RestaurantDto;
-import org.deliverygo.restaurant.dto.RestaurantSaveRequest;
+import org.deliverygo.restaurant.dto.RestaurantCreateRequest;
 import org.deliverygo.restaurant.service.RestaurantService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +19,7 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @PostMapping("/user/restaurant")
-    public void register(@Validated @RequestBody RestaurantSaveRequest restaurantSaveRequest,
+    public void register(@Validated @RequestBody RestaurantCreateRequest restaurantSaveRequest,
                          @RequestHeader(name = HttpHeaders.AUTHORIZATION) String accessToken) {
         JwtToken jwtToken = JwtToken.of(accessToken);
         if (jwtToken.extractGrade() != OWNER) {
