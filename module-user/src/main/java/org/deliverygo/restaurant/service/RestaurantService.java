@@ -2,6 +2,7 @@ package org.deliverygo.restaurant.service;
 
 import org.deliverygo.restaurant.dto.RestaurantDto;
 import org.deliverygo.restaurant.entity.Restaurant;
+import org.deliverygo.restaurant.repository.MenuRepository;
 import org.deliverygo.restaurant.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.deliverygo.login.entity.User;
@@ -18,6 +19,8 @@ public class RestaurantService {
 
     private final UserRepository userRepository;
 
+    private final MenuRepository menuRepository;
+
     @Transactional
     public Long register(RestaurantDto restaurantDto, Long userId) {
         User owner = userRepository.findById(userId).orElseThrow();
@@ -25,6 +28,10 @@ public class RestaurantService {
         Restaurant restaurant = Restaurant.of(restaurantDto, owner);
 
         restaurantRepository.save(restaurant);
+
+        restaurant.addMenus(restaurantDto.getMenus());
+
+        menuRepository.saveAll(restaurant.getMenus());
 
         return restaurant.getId();
     }

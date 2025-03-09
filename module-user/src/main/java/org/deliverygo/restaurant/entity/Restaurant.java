@@ -40,7 +40,7 @@ public class Restaurant extends BaseEntity {
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    @OneToMany(mappedBy = "restaurant", fetch = LAZY, cascade = ALL)
+    @OneToMany(mappedBy = "restaurant", fetch = LAZY)
     private List<Menu> menus = new ArrayList<>();
 
     @Enumerated(STRING)
@@ -55,21 +55,21 @@ public class Restaurant extends BaseEntity {
     }
 
     public static Restaurant of(RestaurantDto restaurantDto, User owner) {
-        Restaurant restaurant = new Restaurant(restaurantDto.getName(),
+        return new Restaurant(restaurantDto.getName(),
             restaurantDto.getAddress(),
             restaurantDto.getPhone(),
             owner,
             restaurantDto.getStatus());
-
-        for (MenuDto menuDto : restaurantDto.getMenus()) {
-            restaurant.addMenus(Menu.ofUse(menuDto));
-        }
-
-        return restaurant;
     }
 
-    public void addMenus(Menu menu) {
-        this.menus.add(menu);
+    public void addMenus(List<MenuDto> menus) {
+        menus.stream()
+            .map(Menu::ofUse)
+            .forEach(this::addMenu);
+    }
+
+    public void addMenu(Menu menu) {
+        menus.add(menu);
         menu.setRestaurant(this);
     }
 }
