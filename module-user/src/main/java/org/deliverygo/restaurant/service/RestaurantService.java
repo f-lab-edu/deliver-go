@@ -1,6 +1,8 @@
 package org.deliverygo.restaurant.service;
 
+import org.deliverygo.restaurant.dto.MenuDto;
 import org.deliverygo.restaurant.dto.RestaurantDto;
+import org.deliverygo.restaurant.entity.Menu;
 import org.deliverygo.restaurant.entity.Restaurant;
 import org.deliverygo.restaurant.repository.MenuRepository;
 import org.deliverygo.restaurant.repository.RestaurantRepository;
@@ -9,6 +11,8 @@ import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,10 +33,16 @@ public class RestaurantService {
 
         restaurantRepository.save(restaurant);
 
-        restaurant.addMenus(restaurantDto.getMenus());
+        addMenus(restaurant, restaurantDto.getMenus());
 
         menuRepository.saveAll(restaurant.getMenus());
 
         return restaurant.getId();
+    }
+
+    private void addMenus(Restaurant restaurant, List<MenuDto> menuDtoList) {
+        menuDtoList.stream()
+            .map(Menu::ofUse)
+            .forEach(restaurant::addMenu);
     }
 }

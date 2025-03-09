@@ -62,12 +62,6 @@ public class Restaurant extends BaseEntity {
             restaurantDto.getStatus());
     }
 
-    public void addMenus(List<MenuDto> menus) {
-        menus.stream()
-            .map(Menu::ofUse)
-            .forEach(this::addMenu);
-    }
-
     public void addMenu(Menu menu) {
         menus.add(menu);
         menu.setRestaurant(this);
