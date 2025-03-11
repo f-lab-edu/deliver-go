@@ -3,7 +3,6 @@ package org.deliverygo.login.controller;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.deliverygo.login.dto.JwtTokenDto;
-import org.deliverygo.login.dto.LoginDto;
 import org.deliverygo.login.dto.LoginRequest;
 import org.deliverygo.login.service.LoginService;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +21,7 @@ public class LoginController {
 
     @PostMapping("/auth/login")
     public void login(@Validated @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        JwtTokenDto jwtTokenDto = loginService.login(LoginDto.of(loginRequest));
+        JwtTokenDto jwtTokenDto = loginService.login(loginRequest);
 
         response.setHeader(HttpHeaders.AUTHORIZATION, jwtTokenDto.getAccessToken());
         response.setHeader("refresh-token", jwtTokenDto.getRefreshToken());
