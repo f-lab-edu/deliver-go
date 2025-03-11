@@ -3,7 +3,7 @@ package org.deliverygo.login.service;
 import lombok.RequiredArgsConstructor;
 import org.deliverygo.login.domain.JwtToken;
 import org.deliverygo.login.dto.JwtTokenDto;
-import org.deliverygo.login.dto.LoginDto;
+import org.deliverygo.login.dto.LoginRequest;
 import org.deliverygo.login.dto.UserDto;
 import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.JwtRepository;
@@ -23,10 +23,10 @@ public class LoginService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public JwtTokenDto login(LoginDto loginDto) {
+    public JwtTokenDto login(LoginRequest loginRequest) {
 
-        User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow();
-        user.verifyPassword(passwordEncoder, loginDto.getPassword());
+        User user = userRepository.findByEmail(loginRequest.email()).orElseThrow();
+        user.verifyPassword(passwordEncoder, loginRequest);
 
         UserDto userDto = UserDto.of(user);
 

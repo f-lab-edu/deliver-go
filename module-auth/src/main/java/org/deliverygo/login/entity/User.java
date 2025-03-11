@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.deliverygo.login.constants.UserGrade;
+import org.deliverygo.login.dto.LoginRequest;
 import org.deliverygo.login.dto.SignUpRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -63,8 +64,8 @@ public class User extends BaseEntity {
             signUpRequest.grade());
     }
 
-    public void verifyPassword(PasswordEncoder passwordEncoder, String requestPassword) {
-        if (!passwordEncoder.matches(requestPassword, password)) {
+    public void verifyPassword(PasswordEncoder passwordEncoder, LoginRequest loginRequest) {
+        if (!passwordEncoder.matches(loginRequest.password(), password)) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
     }

@@ -3,7 +3,7 @@ package org.deliverygo.login.service;
 import org.deliverygo.MainApplication;
 import org.deliverygo.login.domain.JwtToken;
 import org.deliverygo.login.dto.JwtTokenDto;
-import org.deliverygo.login.dto.LoginDto;
+import org.deliverygo.login.dto.LoginRequest;
 import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.JwtRepository;
 import org.deliverygo.login.repository.UserRepository;
@@ -41,9 +41,9 @@ class LoginServiceTest {
     PasswordEncoder passwordEncoder;
 
     User user;
-
     String email;
     String originPassword;
+    LoginRequest loginRequest;
 
     @BeforeEach
     void setUp() {
@@ -52,6 +52,7 @@ class LoginServiceTest {
         user = User.ofEncrypt(passwordEncoder, originPassword, "민장식", email,
             "01011112222", "인천 서구 당하동", OWNER);
         userRepository.save(user);
+        loginRequest = new LoginRequest(email, originPassword);
     }
 
     @Test
@@ -59,7 +60,7 @@ class LoginServiceTest {
     void loginWhenValidCredentialsThenSuccess() {
         doNothing().when(jwtRepository).insertJwt(anyString(), anyString(), anyLong());
 
-        JwtTokenDto jwtTokenDto = loginService.login(LoginDto.of(user.getEmail(), originPassword));
+        JwtTokenDto jwtTokenDto = loginService.login(loginRequest);
 
         JwtToken accessToken = JwtToken.of(jwtTokenDto.getAccessToken());
         JwtToken refreshToken = JwtToken.of(jwtTokenDto.getAccessToken());
@@ -71,17 +72,15 @@ class LoginServiceTest {
     @Test
     @DisplayName("비밀번호 오류 시, 로그인 실패")
     void loginWhenInvalidPasswordThenThrowException() {
-        LoginDto loginDto = LoginDto.of(user.getEmail(), "22221111");
-
-        Assertions.assertThrows(IllegalStateException.class, () -> loginService.login(loginDto));
+        loginRequest = new LoginRequest(user.getEmail(), "22221111");
+        Assertions.assertThrows(IllegalStateException.class, () -> loginService.login(loginRequest));
     }
 
     @Test
     @DisplayName("계정 없을 시, 로그인 실패")
     void loginWhenAccountNotFoundThenThrowException() {
         userRepository.findByEmail(email).ifPresent(userRepository::delete);
-        LoginDto loginDto = LoginDto.of(email, user.getPassword());
 
-        Assertions.assertThrows(NoSuchElementException.class, () -> loginService.login(loginDto));
+        Assertions.assertThrows(NoSuchElementException.class, () -> loginService.login(loginRequest));
     }
 }
