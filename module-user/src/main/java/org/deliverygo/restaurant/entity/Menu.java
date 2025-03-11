@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.deliverygo.login.entity.BaseEntity;
-import org.deliverygo.restaurant.dto.MenuDto;
+import org.deliverygo.restaurant.dto.MenuCreateRequest;
 
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -40,8 +40,8 @@ public class Menu extends BaseEntity {
         this.description = description;
     }
 
-    public static Menu ofUse(MenuDto menuDto) {
-        return new Menu(menuDto.getName(), true, menuDto.getPrice(), menuDto.getDescription());
+    public static Menu ofUse(MenuCreateRequest menuCreateRequest) {
+        return new Menu(menuCreateRequest.name(), true, menuCreateRequest.price(), menuCreateRequest.description());
     }
 
     public void setRestaurant(Restaurant restaurant) {

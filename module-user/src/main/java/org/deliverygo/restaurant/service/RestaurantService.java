@@ -1,7 +1,7 @@
 package org.deliverygo.restaurant.service;
 
-import org.deliverygo.restaurant.dto.MenuDto;
-import org.deliverygo.restaurant.dto.RestaurantDto;
+import org.deliverygo.restaurant.dto.MenuCreateRequest;
+import org.deliverygo.restaurant.dto.RestaurantCreateRequest;
 import org.deliverygo.restaurant.entity.Menu;
 import org.deliverygo.restaurant.entity.Restaurant;
 import org.deliverygo.restaurant.repository.MenuRepository;
@@ -26,22 +26,22 @@ public class RestaurantService {
     private final MenuRepository menuRepository;
 
     @Transactional
-    public Long register(RestaurantDto restaurantDto, Long userId) {
+    public Long register(RestaurantCreateRequest restaurantCreateRequest, Long userId) {
         User owner = userRepository.findById(userId).orElseThrow();
 
-        Restaurant restaurant = Restaurant.of(restaurantDto, owner);
+        Restaurant restaurant = Restaurant.of(restaurantCreateRequest, owner);
 
         restaurantRepository.save(restaurant);
 
-        addMenus(restaurant, restaurantDto.getMenus());
+        addMenus(restaurant, restaurantCreateRequest.menus());
 
         menuRepository.saveAll(restaurant.getMenus());
 
         return restaurant.getId();
     }
 
-    private void addMenus(Restaurant restaurant, List<MenuDto> menuDtoList) {
-        menuDtoList.stream()
+    private void addMenus(Restaurant restaurant, List<MenuCreateRequest> menuCreateRequest) {
+        menuCreateRequest.stream()
             .map(Menu::ofUse)
             .forEach(restaurant::addMenu);
     }

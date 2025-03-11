@@ -2,7 +2,6 @@ package org.deliverygo.restaurant.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.deliverygo.login.domain.JwtToken;
-import org.deliverygo.restaurant.dto.RestaurantDto;
 import org.deliverygo.restaurant.dto.RestaurantCreateRequest;
 import org.deliverygo.restaurant.service.RestaurantService;
 import org.springframework.http.HttpHeaders;
@@ -19,13 +18,13 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @PostMapping("/user/restaurant")
-    public void register(@Validated @RequestBody RestaurantCreateRequest restaurantSaveRequest,
+    public void register(@Validated @RequestBody RestaurantCreateRequest restaurantCreateRequest,
                          @RequestHeader(name = HttpHeaders.AUTHORIZATION) String accessToken) {
         JwtToken jwtToken = JwtToken.of(accessToken);
         if (jwtToken.extractGrade() != OWNER) {
             throw new IllegalStateException("사장님만 음식점을 등록할 수 있습니다.");
         }
 
-        restaurantService.register(RestaurantDto.of(restaurantSaveRequest), Long.valueOf(jwtToken.extractUserId()));
+        restaurantService.register(restaurantCreateRequest, Long.valueOf(jwtToken.extractUserId()));
     }
 }

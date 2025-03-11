@@ -2,8 +2,7 @@ package org.deliverygo.restaurant.entity;
 
 import lombok.NoArgsConstructor;
 import org.deliverygo.restaurant.constants.RestaurantStatus;
-import org.deliverygo.restaurant.dto.MenuDto;
-import org.deliverygo.restaurant.dto.RestaurantDto;
+import org.deliverygo.restaurant.dto.RestaurantCreateRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.deliverygo.login.entity.BaseEntity;
@@ -12,7 +11,6 @@ import org.deliverygo.login.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
@@ -54,12 +52,12 @@ public class Restaurant extends BaseEntity {
         this.status = status;
     }
 
-    public static Restaurant of(RestaurantDto restaurantDto, User owner) {
-        return new Restaurant(restaurantDto.getName(),
-            restaurantDto.getAddress(),
-            restaurantDto.getPhone(),
+    public static Restaurant of(RestaurantCreateRequest restaurantCreateRequest, User owner) {
+        return new Restaurant(restaurantCreateRequest.name(),
+            restaurantCreateRequest.address(),
+            restaurantCreateRequest.phone(),
             owner,
-            restaurantDto.getStatus());
+            restaurantCreateRequest.status());
     }
 
     public void addMenu(Menu menu) {
