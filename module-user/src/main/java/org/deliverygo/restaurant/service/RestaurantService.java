@@ -1,5 +1,6 @@
 package org.deliverygo.restaurant.service;
 
+import org.deliverygo.login.domain.JwtToken;
 import org.deliverygo.restaurant.dto.MenuCreateRequest;
 import org.deliverygo.restaurant.dto.RestaurantCreateRequest;
 import org.deliverygo.restaurant.entity.Menu;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RestaurantService {
 
@@ -26,8 +26,8 @@ public class RestaurantService {
     private final MenuRepository menuRepository;
 
     @Transactional
-    public Long register(RestaurantCreateRequest restaurantCreateRequest, Long userId) {
-        User owner = userRepository.findById(userId).orElseThrow();
+    public Long register(RestaurantCreateRequest restaurantCreateRequest, JwtToken jwtToken) {
+        User owner = userRepository.findById(Long.valueOf(jwtToken.extractUserId())).orElseThrow();
 
         Restaurant restaurant = Restaurant.of(restaurantCreateRequest, owner);
 

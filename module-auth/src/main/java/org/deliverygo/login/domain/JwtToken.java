@@ -13,6 +13,8 @@ import javax.crypto.SecretKey;
 import java.time.Clock;
 import java.util.Date;
 
+import static org.deliverygo.login.constants.UserGrade.*;
+
 @Getter
 public class JwtToken {
 
@@ -67,11 +69,15 @@ public class JwtToken {
 
     public UserGrade extractGrade() {
         String grade = extractClaims().get("grade", String.class);
-        return UserGrade.valueOf(grade);
+        return valueOf(grade);
     }
 
     public String extractUserId() {
         return extractClaims().getSubject();
+    }
+
+    public boolean isOwner() {
+        return extractGrade() == OWNER;
     }
 
     private Claims extractClaims() {

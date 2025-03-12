@@ -1,6 +1,7 @@
 package org.deliverygo.restaurant.service;
 
 import org.deliverygo.MainApplication;
+import org.deliverygo.login.domain.JwtToken;
 import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.UserRepository;
 import org.deliverygo.restaurant.dto.MenuCreateRequest;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import static org.deliverygo.login.constants.UserGrade.OWNER;
 import static org.deliverygo.restaurant.constants.RestaurantStatus.*;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = MainApplication.class)
 @Transactional
@@ -36,6 +39,9 @@ class RestaurantServiceTest {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Mock
+    JwtToken jwtToken;
 
     User owner;
 
@@ -57,7 +63,9 @@ class RestaurantServiceTest {
     @Test
     @DisplayName("음식점 등록 성공")
     void registerRestaurantSuccess() {
-        Long registeredId = restaurantService.register(restaurantCreateRequest, owner.getId());
+        when(jwtToken.extractUserId()).thenReturn(String.valueOf(owner.getId()));
+
+        Long registeredId = restaurantService.register(restaurantCreateRequest, jwtToken);
 
         Restaurant findRestaurant = restaurantRepository.findById(registeredId).orElseThrow();
         Assertions.assertEquals(registeredId, findRestaurant.getId());
