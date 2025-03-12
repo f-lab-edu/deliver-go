@@ -11,9 +11,11 @@ import org.deliverygo.login.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
+import static org.deliverygo.restaurant.constants.RestaurantStatus.*;
 
 @Entity
 @Getter
@@ -38,7 +40,7 @@ public class Restaurant extends BaseEntity {
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    @OneToMany(mappedBy = "restaurant", fetch = LAZY)
+    @OneToMany(mappedBy = "restaurant", fetch = LAZY, cascade = ALL)
     private List<Menu> menus = new ArrayList<>();
 
     @Enumerated(STRING)
