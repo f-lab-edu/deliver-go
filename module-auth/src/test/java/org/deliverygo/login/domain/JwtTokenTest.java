@@ -1,7 +1,6 @@
 package org.deliverygo.login.domain;
 
 import org.deliverygo.login.dto.UserDto;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +13,7 @@ import java.util.Date;
 import static org.deliverygo.login.constants.UserGrade.NORMAL;
 import static org.deliverygo.login.constants.UserGrade.OWNER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class JwtTokenTest {
 
@@ -70,7 +70,7 @@ class JwtTokenTest {
 
         JwtToken jwtToken = JwtToken.ofAccessToken(userDto, new Date(), 1L);
 
-        Assertions.assertNotEquals(OWNER, jwtToken.extractGrade());
+        assertNotEquals(OWNER, jwtToken.extractGrade());
     }
 
     private Clock createFixedPlusClock(Clock clock, int secondsToAdd) {
