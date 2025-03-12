@@ -1,0 +1,14 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'com.h2database:h2'
+    implementation 'io.jsonwebtoken:jjwt:0.12.3'
+    implementation project(':module-user')
+    implementation project(':module-auth')
+
+    testImplementation(project(":main-app"))
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}

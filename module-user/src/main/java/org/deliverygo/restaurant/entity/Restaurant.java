@@ -62,8 +62,20 @@ public class Restaurant extends BaseEntity {
             restaurantCreateRequest.status());
     }
 
+    public static Restaurant ofOpen(String name, String address, String phone, User owner) {
+        return new Restaurant(name, address, phone, owner, OPEN);
+    }
+
+    public static Restaurant ofClose(String name, String address, String phone, User owner) {
+        return new Restaurant(name, address, phone, owner, CLOSE);
+    }
+
     public void addMenu(Menu menu) {
         menus.add(menu);
         menu.setRestaurant(this);
+    }
+
+    public boolean isOpen() {
+        return status == OPEN;
     }
 }
