@@ -6,11 +6,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import org.deliverygo.login.constants.UserGrade;
 import org.deliverygo.login.dto.UserDto;
 
 import javax.crypto.SecretKey;
 import java.time.Clock;
 import java.util.Date;
+
+import static org.deliverygo.login.constants.UserGrade.*;
 
 @Getter
 public class JwtToken {
@@ -62,6 +65,19 @@ public class JwtToken {
 
     public String extractEmail() {
         return extractClaims().get("email", String.class);
+    }
+
+    public UserGrade extractGrade() {
+        String grade = extractClaims().get("grade", String.class);
+        return valueOf(grade);
+    }
+
+    public String extractUserId() {
+        return extractClaims().getSubject();
+    }
+
+    public boolean isOwner() {
+        return extractGrade() == OWNER;
     }
 
     private Claims extractClaims() {
