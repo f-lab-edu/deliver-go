@@ -52,7 +52,6 @@ public class User extends BaseEntity {
 
     public static User of(String password, String name, String email, String address, String phone, UserGrade grade) {
         return new User(password, name, email, address, phone, grade);
-
     }
 
     public static User ofEncrypt(PasswordEncoder passwordEncoder, String password, String name, String email, String address,
