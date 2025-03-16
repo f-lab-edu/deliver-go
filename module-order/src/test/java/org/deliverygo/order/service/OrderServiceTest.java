@@ -44,8 +44,8 @@ class OrderServiceTest {
     MenuRepository menuRepository;
 
     @Test
-    @DisplayName("음식점 주문 성공")
-    void test() {
+    @DisplayName("음식점이 Open이면 주문 성공")
+    void shouldSuccessfullyPlaceOrderWhenRestaurantIsOpen() {
         ArrayList<MenuCreateRequest> menus = new ArrayList<>();
         menus.add(new MenuCreateRequest(5000, 5L, 3));
         menus.add(new MenuCreateRequest(10000, 6L,5));
@@ -72,7 +72,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("음식점이 close 이면 주문 예외")
-    void test2() {
+    void shouldThrowExceptionWhenRestaurantIsClosed() {
         ArrayList<MenuCreateRequest> menus = new ArrayList<>();
         menus.add(new MenuCreateRequest(5000, 5L, 3));
         menus.add(new MenuCreateRequest(10000, 6L,5));
