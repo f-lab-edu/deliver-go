@@ -40,6 +40,10 @@ public class Menu extends BaseEntity {
         this.description = description;
     }
 
+    public static Menu of(String name, int price, String description) {
+        return new Menu(name, true, price, description);
+    }
+
     public static Menu ofUse(MenuCreateRequest menuCreateRequest) {
         return new Menu(menuCreateRequest.name(), true, menuCreateRequest.price(), menuCreateRequest.description());
     }
