@@ -64,7 +64,7 @@ public class Order extends BaseEntity {
     }
 
     public void addMenu(OrderMenu orderMenu) {
-        orderMenu.setOrder(this);
+        orderMenu.assignOrder(this);
         orderMenus.add(orderMenu);
         totalPrice += orderMenu.calculatePrice();
     }

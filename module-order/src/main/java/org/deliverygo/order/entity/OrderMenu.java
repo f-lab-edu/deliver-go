@@ -3,6 +3,7 @@ package org.deliverygo.order.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.deliverygo.login.entity.BaseEntity;
 import org.deliverygo.restaurant.entity.Menu;
 
 import static jakarta.persistence.FetchType.*;
@@ -13,7 +14,7 @@ import static org.deliverygo.order.dto.OrderCreateRequest.*;
 @Table(name = "order_menu")
 @Getter
 @NoArgsConstructor
-public class OrderMenu {
+public class OrderMenu extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -39,7 +40,7 @@ public class OrderMenu {
         return new OrderMenu(menu, menuCreateRequest.quantity());
     }
 
-    public void setOrder(Order order) {
+    public void assignOrder(Order order) {
         this.order = order;
     }
 
