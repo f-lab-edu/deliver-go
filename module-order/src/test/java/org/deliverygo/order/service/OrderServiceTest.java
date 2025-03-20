@@ -18,6 +18,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.deliverygo.order.dto.OrderCreateRequest.*;
@@ -44,24 +45,11 @@ class OrderServiceTest {
     MenuRepository menuRepository;
 
     @Test
-    @DisplayName("음식점이 Open이면 주문 성공")
+    @DisplayName("10번 음식점 '왕돈까스집' 이 Open 상태일 때 주문을 하면, 총 금액과, 메뉴 갯수, 음식점 이름이 요청한 정보와 DB 간에 일치")
     void shouldSuccessfullyPlaceOrderWhenRestaurantIsOpen() {
-        ArrayList<MenuCreateRequest> menus = new ArrayList<>();
-        menus.add(new MenuCreateRequest(5000, 5L, 3));
-        menus.add(new MenuCreateRequest(10000, 6L,5));
+        mockingRepository(createUser(), createOpenRestaurant(createUser()));
 
-        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(10, menus, "js.test.com", "서울");
-        User user = User.of("testPassword", "사용자", "js.test.com", "인천 서구",
-            "01022223333", UserGrade.NORMAL);
-
-        Restaurant restaurant = Restaurant.ofOpen("왕돈까스집", "인천 열미", "01022222222", user);
-        when(userRepository.findByEmail("js.test.com")).thenReturn(Optional.of(user));
-
-        when(restaurantRepository.findById(10L)).thenReturn(Optional.of(restaurant));
-        when(menuRepository.findById(5L)).thenReturn(Optional.of(Menu.of("이름1", 5000, "test1")));
-        when(menuRepository.findById(6L)).thenReturn(Optional.of(Menu.of("이름2", 10000, "test2")));
-
-        long orderedId = orderService.order(orderCreateRequest);
+        long orderedId = orderService.order(createOrderCreateRequest(createMenuCreateRequests()));
 
         Order savedOrder = orderRepository.findById(orderedId).orElseThrow();
 
@@ -71,23 +59,42 @@ class OrderServiceTest {
     }
 
     @Test
-    @DisplayName("음식점이 close 이면 주문 예외")
+    @DisplayName("음식점이 Close 상태일 때 주문을 하면, 예외 발생")
     void shouldThrowExceptionWhenRestaurantIsClosed() {
-        ArrayList<MenuCreateRequest> menus = new ArrayList<>();
-        menus.add(new MenuCreateRequest(5000, 5L, 3));
-        menus.add(new MenuCreateRequest(10000, 6L,5));
+        OrderCreateRequest orderCreateRequest = createOrderCreateRequest(createMenuCreateRequests());
+        mockingRepository(createUser(), createCloseRestaurant(createUser()));
 
-        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(10, menus, "js.test.com", "서울");
-        User user = User.of("testPassword", "사용자", "js.test.com", "인천 서구",
+        assertThrows(IllegalStateException.class, () -> orderService.order(orderCreateRequest));
+    }
+
+    private User createUser() {
+        return User.of("testPassword", "사용자", "js.test.com", "인천 서구",
             "01022223333", UserGrade.NORMAL);
+    }
 
-        Restaurant restaurant = Restaurant.ofClose("왕돈까스집", "인천 열미", "01022222222", user);
+    private Restaurant createOpenRestaurant(User user) {
+        return Restaurant.ofOpen("왕돈까스집", "인천 열미", "01022222222", user);
+    }
+
+    private OrderCreateRequest createOrderCreateRequest(List<MenuCreateRequest> menus) {
+        return new OrderCreateRequest(10, menus, "js.test.com", "서울");
+    }
+
+    private void mockingRepository(User user, Restaurant restaurant) {
         when(userRepository.findByEmail("js.test.com")).thenReturn(Optional.of(user));
-
         when(restaurantRepository.findById(10L)).thenReturn(Optional.of(restaurant));
         when(menuRepository.findById(5L)).thenReturn(Optional.of(Menu.of("이름1", 5000, "test1")));
         when(menuRepository.findById(6L)).thenReturn(Optional.of(Menu.of("이름2", 10000, "test2")));
+    }
 
-        assertThrows(IllegalStateException.class, () -> orderService.order(orderCreateRequest));
+    private Restaurant createCloseRestaurant(User user) {
+        return Restaurant.ofClose("왕돈까스집", "인천 열미", "01022222222", user);
+    }
+
+    private List<MenuCreateRequest> createMenuCreateRequests() {
+        List<MenuCreateRequest> menus = new ArrayList<>();
+        menus.add(new MenuCreateRequest(5000, 5L, 3));
+        menus.add(new MenuCreateRequest(10000, 6L, 5));
+        return menus;
     }
 }

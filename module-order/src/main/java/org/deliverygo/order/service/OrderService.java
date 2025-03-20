@@ -45,7 +45,7 @@ public class OrderService {
     }
 
     private void isOpen(Restaurant restaurant) {
-        if(!restaurant.isOpen()) {
+        if (!restaurant.isOpen()) {
             throw new IllegalStateException("음식점 " + restaurant.getName() + "가(이) 영업중인 상태가 아닙니다.");
         }
     }
@@ -53,9 +53,12 @@ public class OrderService {
     private List<OrderMenu> createOrderMenus(OrderCreateRequest orderCreateRequest) {
         return orderCreateRequest.menus()
             .stream()
-            .map(menuCreateRequest -> {
-                Menu menu = menuRepository.findById(menuCreateRequest.menuId()).orElseThrow();
-                return OrderMenu.of(menu, menuCreateRequest);
-            }).toList();
+            .map(menuCreateRequest -> createOrderMenu(menuCreateRequest))
+            .toList();
+    }
+
+    private OrderMenu createOrderMenu(OrderCreateRequest.MenuCreateRequest menuCreateRequest) {
+        Menu menu = menuRepository.findById(menuCreateRequest.menuId()).orElseThrow();
+        return OrderMenu.of(menu, menuCreateRequest);
     }
 }
