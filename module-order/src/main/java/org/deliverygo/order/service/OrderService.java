@@ -1,6 +1,7 @@
 package org.deliverygo.order.service;
 
 import lombok.RequiredArgsConstructor;
+import org.deliverygo.exception.RestaurantCloseException;
 import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.UserRepository;
 import org.deliverygo.order.dto.OrderCreateRequest;
@@ -45,8 +46,8 @@ public class OrderService {
     }
 
     private void isOpen(Restaurant restaurant) {
-        if (!restaurant.isOpen()) {
-            throw new IllegalStateException("음식점 " + restaurant.getName() + "가(이) 영업중인 상태가 아닙니다.");
+        if(!restaurant.isOpen()) {
+            throw new RestaurantCloseException("음식점 " + restaurant.getName() + "가(이) 영업중인 상태가 아닙니다.");
         }
     }
 
