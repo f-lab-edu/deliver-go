@@ -1,6 +1,8 @@
 package org.deliverygo.exception;
 
-public class RestaurantCloseException extends RuntimeException {
+import org.deliverygo.global.exception.BusinessException;
+
+public class RestaurantCloseException extends BusinessException {
 
     public RestaurantCloseException(String message) {  //
         super(message);
