@@ -1,4 +1,4 @@
-package org.deliverygo.order.constants;
+package org.deliverygo.global.constants;
 
 public enum OrderStatus {
 

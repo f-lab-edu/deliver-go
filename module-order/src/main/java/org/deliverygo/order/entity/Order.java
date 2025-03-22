@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.deliverygo.login.entity.BaseEntity;
 import org.deliverygo.login.entity.User;
-import org.deliverygo.order.constants.OrderStatus;
+import org.deliverygo.global.constants.OrderStatus;
 import org.deliverygo.order.dto.OrderCreateRequest;
 import org.deliverygo.restaurant.entity.Restaurant;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
-import static org.deliverygo.order.constants.OrderStatus.*;
+import static org.deliverygo.global.constants.OrderStatus.*;
 
 @Entity
 @Table(name = "orders")
