@@ -4,7 +4,8 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
-
+  kafka:
+    bootstrap-servers: "localhost:9092"
   jpa:
     hibernate:
       ddl-auto: update  # (옵션: create, update, validate, none)
@@ -20,3 +21,4 @@ spring:
 logging:
   level:
     org.deliverygo.login.kafka: debug
+
