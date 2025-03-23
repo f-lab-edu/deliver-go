@@ -6,6 +6,7 @@ import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.UserRepository;
 import org.deliverygo.order.dto.OrderCreateRequest;
 import org.deliverygo.order.entity.Order;
+import org.deliverygo.order.kafka.OrderEventProducer;
 import org.deliverygo.order.repository.OrderRepository;
 import org.deliverygo.restaurant.entity.Menu;
 import org.deliverygo.restaurant.entity.Restaurant;
@@ -44,6 +45,9 @@ class OrderServiceTest {
 
     @MockitoBean
     MenuRepository menuRepository;
+
+    @MockitoBean
+    OrderEventProducer orderEventProducer;
 
     @Test
     @DisplayName("10번 음식점 '왕돈까스집' 이 Open 상태일 때 주문을 하면, 총 금액과, 메뉴 갯수, 음식점 이름이 요청한 정보와 DB 간에 일치")
