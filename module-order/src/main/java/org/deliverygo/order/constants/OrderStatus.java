@@ -5,16 +5,20 @@ import java.util.Set;
 
 public enum OrderStatus {
 
-    SUCCESS(EnumSet.noneOf(OrderStatus.class)),
-    FAILED(EnumSet.noneOf(OrderStatus.class)),
-    CANCELED(EnumSet.noneOf(OrderStatus.class)),
-    CANCEL_REQUEST(EnumSet.of(CANCELED)),
-    RECEIVED(EnumSet.of(SUCCESS, FAILED, CANCEL_REQUEST));
+    SUCCESS,
+    FAILED,
+    CANCELED,
+    CANCEL_REQUEST,
+    RECEIVED;
 
-    private final Set<OrderStatus> nextStates;
+    private Set<OrderStatus> nextStates;
 
-    OrderStatus(Set<OrderStatus> nextStates) {
-        this.nextStates = nextStates;
+    static {
+        SUCCESS.nextStates = EnumSet.noneOf(OrderStatus.class);
+        FAILED.nextStates = EnumSet.noneOf(OrderStatus.class);
+        CANCELED.nextStates = EnumSet.noneOf(OrderStatus.class);
+        CANCEL_REQUEST.nextStates = EnumSet.of(CANCELED);
+        RECEIVED.nextStates = EnumSet.of(SUCCESS, FAILED, CANCEL_REQUEST);
     }
 
     public boolean canTransitionTo(OrderStatus next) {
