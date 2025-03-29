@@ -26,7 +26,7 @@ public class OrderEventProducer {
             });
     }
 
-    private void sendToDlt(String key, Object payload) {
+    private void sendToDlt(String key, OrderCreateEvent payload) {
         String dltTopic = TOPIC + "-dlt";
         kafkaEventProducer.send(dltTopic, key, payload)
             .exceptionally(e -> {

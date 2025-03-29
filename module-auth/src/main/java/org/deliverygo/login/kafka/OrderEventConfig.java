@@ -32,7 +32,7 @@ public class OrderEventConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, OrderCreateEvent> kafkaTemplate;
 
     @Bean
     KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, OrderCreateEvent>>

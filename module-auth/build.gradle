@@ -12,6 +12,6 @@ dependencies {
 
     testImplementation 'com.h2database:h2'
     testImplementation(project(":main-app"))
-    implementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
     testImplementation "org.springframework.boot:spring-boot-starter-test"
 }

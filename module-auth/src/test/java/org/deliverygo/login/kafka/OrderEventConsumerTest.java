@@ -27,7 +27,7 @@ class OrderEventConsumerTest {
     EmbeddedKafkaBroker embeddedKafka;
 
     @Autowired
-    KafkaTemplate<String, Object> kafkaTemplate;
+    KafkaTemplate<String, OrderCreateEvent> kafkaTemplate;
 
     @MockitoBean
     StompSendService stompSendService;

@@ -45,9 +45,9 @@ class OrderEventProducerTest {
 
     Consumer<String, OrderCreateEvent> consumer;
 
-    String orderTopic;
+    String orderTopic = "order-topic";
 
-    String orderTopicDlt;
+    String orderTopicDlt = orderTopic + "-dlt";
 
     @BeforeEach
     void setUp() {
@@ -57,8 +57,6 @@ class OrderEventProducerTest {
         ConsumerFactory<String, OrderCreateEvent> cf = new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
             valueDeserializer);
         consumer = cf.createConsumer();
-        orderTopic = "order-topic";
-        orderTopicDlt = orderTopic + "-dlt";
     }
 
     @AfterEach

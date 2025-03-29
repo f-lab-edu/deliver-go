@@ -3,7 +3,6 @@ package org.deliverygo.global.dto;
 import org.deliverygo.global.constants.OrderStatus;
 
 public record OrderCreateEvent(
-
     UserSummary userSummary,
     OrderSummary orderSummary
 ) {
