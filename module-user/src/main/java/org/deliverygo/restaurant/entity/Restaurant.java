@@ -10,6 +10,7 @@ import org.deliverygo.login.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.EnumType.*;
@@ -77,5 +78,11 @@ public class Restaurant extends BaseEntity {
 
     public boolean isOpen() {
         return status == OPEN;
+    }
+
+    public Optional<Menu> findMenu(long menuId) {
+        return menus.stream()
+            .filter(menu -> menu.getId().equals(menuId))
+            .findFirst();
     }
 }
