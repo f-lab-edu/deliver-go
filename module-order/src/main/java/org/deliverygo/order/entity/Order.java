@@ -9,6 +9,7 @@ import org.deliverygo.global.constants.OrderStatus;
 import org.deliverygo.order.dto.OrderCreateRequest;
 import org.deliverygo.restaurant.entity.Restaurant;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,8 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    private int totalPrice;
+    @Column(name = "total_price", precision = 10, scale = 2, nullable = false)
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 
     private String deliveryAddress;
 
@@ -66,6 +68,6 @@ public class Order extends BaseEntity {
     private void addMenu(OrderMenu orderMenu) {
         orderMenu.assignOrder(this);
         orderMenus.add(orderMenu);
-        totalPrice += orderMenu.calculatePrice();
+        totalPrice = totalPrice.add(orderMenu.calculatePrice());
     }
 }

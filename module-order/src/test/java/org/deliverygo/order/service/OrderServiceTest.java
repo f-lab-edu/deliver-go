@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,8 +89,8 @@ class OrderServiceTest {
 
     private Restaurant createOpenRestaurant(User user) {
         Restaurant restaurant = Restaurant.ofOpen("왕돈까스집", "인천 열미", "01022222222", user);
-        restaurant.addMenu(menuRepository.save(Menu.of("이름1", 5000, "test1")));
-        restaurant.addMenu(menuRepository.save(Menu.of("이름2", 10000, "test2")));
+        restaurant.addMenu(menuRepository.save(Menu.of("이름1", new BigDecimal(5000), "test1")));
+        restaurant.addMenu(menuRepository.save(Menu.of("이름2", new BigDecimal(10000), "test2")));
         return restaurant;
     }
 
