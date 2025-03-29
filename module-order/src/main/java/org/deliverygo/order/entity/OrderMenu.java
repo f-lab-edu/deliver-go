@@ -29,6 +29,7 @@ public class OrderMenu extends BaseEntity {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
+    @Column(name = "quantity")
     private int quantity;
 
     private OrderMenu(Menu menu, int quantity) {
