@@ -25,7 +25,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResponse<ErrorResponse> handleJsonParseException(HttpMessageNotReadableException ex) {
+        return ApiResponse.error(ErrorResponse.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleJsonParseException(BusinessException ex) {
         return ApiResponse.error(ErrorResponse.of(ex.getMessage()));
     }
 }
