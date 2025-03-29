@@ -48,13 +48,17 @@ class OrderServiceTest {
     @Test
     @DisplayName("10번 음식점 '왕돈까스집' 이 Open 상태일 때 주문을 하면, 총 금액과, 메뉴 갯수, 음식점 이름이 요청한 정보와 DB 간에 일치")
     void shouldSuccessfullyPlaceOrderWhenRestaurantIsOpen() {
+
+        //case
         Restaurant openRestaurant = createOpenRestaurant(createUser());
         mockingRepository(createUser(), openRestaurant);
         OrderCreateRequest orderCreateRequest = createOrderCreateRequest(createMenuCreateRequests(openRestaurant));
 
+        //when
         long orderedId = orderService.order(orderCreateRequest);
         Order savedOrder = orderRepository.findById(orderedId).orElseThrow();
 
+        //then
         assertEquals("왕돈까스집", savedOrder.getRestaurant().getName());
         assertEquals(orderCreateRequest.calculateTotalPrice(), savedOrder.getTotalPrice());
         assertEquals(2, savedOrder.getOrderMenus().size());
@@ -63,10 +67,13 @@ class OrderServiceTest {
     @Test
     @DisplayName("음식점이 Close 상태일 때 주문을 하면, 예외 발생")
     void shouldThrowExceptionWhenRestaurantIsClosed() {
+
+        //case
         Restaurant openRestaurant = createOpenRestaurant(createUser());
         OrderCreateRequest orderCreateRequest = createOrderCreateRequest(createMenuCreateRequests(openRestaurant));
         mockingRepository(createUser(), createCloseRestaurant(createUser()));
 
+        //then
         assertThrows(RestaurantCloseException.class, () -> orderService.order(orderCreateRequest));
     }
 
