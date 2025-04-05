@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.deliverygo.login.entity.BaseEntity;
 import org.deliverygo.restaurant.entity.Menu;
 
+import java.math.BigDecimal;
+
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static org.deliverygo.order.dto.OrderCreateRequest.*;
@@ -45,7 +47,7 @@ public class OrderMenu extends BaseEntity {
         this.order = order;
     }
 
-    public int calculatePrice() {
-        return quantity * menu.getPrice();
+    public BigDecimal calculatePrice() {
+        return menu.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 }

@@ -7,6 +7,8 @@ import org.deliverygo.login.repository.UserRepository;
 import org.deliverygo.order.dto.OrderCreateRequest;
 import org.deliverygo.order.entity.Order;
 import org.deliverygo.order.entity.OrderMenu;
+import org.deliverygo.order.kafka.OrderCreateEventMapper;
+import org.deliverygo.order.kafka.OrderEventProducer;
 import org.deliverygo.order.repository.OrderRepository;
 import org.deliverygo.restaurant.entity.Menu;
 import org.deliverygo.restaurant.entity.Restaurant;
@@ -26,6 +28,7 @@ public class OrderService {
     private final RestaurantRepository restaurantRepository;
     private final OrderRepository orderRepository;
     private final PaymentService paymentService;
+    private final OrderEventProducer orderEventProducer;
 
     @Transactional
     public long order(OrderCreateRequest orderCreateRequest) {
@@ -40,6 +43,8 @@ public class OrderService {
         Order savedOrder = orderRepository.save(order);
 
         paymentService.payment(savedOrder);
+
+        orderEventProducer.sendOrderCreate(OrderCreateEventMapper.toDto(user, order));
 
         return savedOrder.getId();
     }

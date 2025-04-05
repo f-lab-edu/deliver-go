@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.deliverygo.login.entity.BaseEntity;
 import org.deliverygo.restaurant.dto.MenuCreateRequest;
 
+import java.math.BigDecimal;
+
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -28,19 +30,19 @@ public class Menu extends BaseEntity {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    private int price;
+    private BigDecimal price;
 
     @Column(length = 500)
     private String description;
 
-    private Menu(String name, boolean useFlag, int price, String description) {
+    private Menu(String name, boolean useFlag, BigDecimal price, String description) {
         this.name = name;
         this.useFlag = useFlag;
         this.price = price;
         this.description = description;
     }
 
-    private Menu(Long id, String name, boolean useFlag, int price, String description) {
+    private Menu(Long id, String name, boolean useFlag, BigDecimal price, String description) {
         this.id = id;
         this.name = name;
         this.useFlag = useFlag;
@@ -48,11 +50,11 @@ public class Menu extends BaseEntity {
         this.description = description;
     }
 
-    public static Menu of(Long id, String name, int price, String description) {
+    public static Menu of(Long id, String name, BigDecimal price, String description) {
         return new Menu(id, name, true, price, description);
     }
 
-    public static Menu of(String name, int price, String description) {
+    public static Menu of(String name, BigDecimal price, String description) {
         return new Menu(name, true, price, description);
     }
 

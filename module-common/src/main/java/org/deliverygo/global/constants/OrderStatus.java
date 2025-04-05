@@ -1,4 +1,4 @@
-package org.deliverygo.order.constants;
+package org.deliverygo.global.constants;
 
 import java.util.EnumSet;
 import java.util.Set;

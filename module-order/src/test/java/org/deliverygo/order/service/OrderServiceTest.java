@@ -6,6 +6,7 @@ import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.UserRepository;
 import org.deliverygo.order.dto.OrderCreateRequest;
 import org.deliverygo.order.entity.Order;
+import org.deliverygo.order.kafka.OrderEventProducer;
 import org.deliverygo.order.repository.OrderRepository;
 import org.deliverygo.restaurant.entity.Menu;
 import org.deliverygo.restaurant.entity.Restaurant;
@@ -15,9 +16,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
+@EmbeddedKafka
 class OrderServiceTest {
 
     @Autowired
@@ -44,6 +48,9 @@ class OrderServiceTest {
 
     @Autowired
     MenuRepository menuRepository;
+
+    @MockitoBean
+    OrderEventProducer orderEventProducer;
 
     @Test
     @DisplayName("10번 음식점 '왕돈까스집' 이 Open 상태일 때 주문을 하면, 총 금액과, 메뉴 갯수, 음식점 이름이 요청한 정보와 DB 간에 일치")
@@ -84,8 +91,8 @@ class OrderServiceTest {
 
     private Restaurant createOpenRestaurant(User user) {
         Restaurant restaurant = Restaurant.ofOpen("왕돈까스집", "인천 열미", "01022222222", user);
-        restaurant.addMenu(menuRepository.save(Menu.of("이름1", 5000, "test1")));
-        restaurant.addMenu(menuRepository.save(Menu.of("이름2", 10000, "test2")));
+        restaurant.addMenu(menuRepository.save(Menu.of("이름1", new BigDecimal(5000), "test1")));
+        restaurant.addMenu(menuRepository.save(Menu.of("이름2", new BigDecimal(10000), "test2")));
         return restaurant;
     }
 
