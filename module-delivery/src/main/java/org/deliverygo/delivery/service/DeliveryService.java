@@ -1,26 +1,29 @@
 package org.deliverygo.delivery.service;
 
 import lombok.RequiredArgsConstructor;
-import org.deliverygo.delivery.client.GoogleDirecitonClient;
+import org.deliverygo.delivery.client.GoogleDirectionClient;
 import org.deliverygo.delivery.dto.GoogleEtaRequest;
 import org.deliverygo.delivery.dto.SaveDeliveryLocationRequest;
+import org.deliverygo.delivery.entity.Rider;
+import org.deliverygo.delivery.repository.RiderRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
 public class DeliveryService {
-    private final GoogleDirecitonClient googleDirecitonClient;
+
+    private final GoogleDirectionClient googleDirectionClient;
+
+    private final RiderRepository riderRepository;
 
     public void saveDeliveryLocation(SaveDeliveryLocationRequest request) {
         GoogleEtaRequest googleEtaRequest = GoogleEtaRequest.of(request);
 
-        googleDirecitonClient.getEta(googleEtaRequest, (eta, error) ->
-            dbRepository.saveDeliveryLocation(request, eta));
-        // redis? mongodb?
+        googleDirectionClient.getEta(googleEtaRequest, (eta, error) ->
+            riderRepository.saveRiderLocation(Rider.of(request, eta)));
     }
 
-    // 협력(문맥) -> 메시지(책임) -> 객체 -> 행동 -> 상태 -> 클래스
+
 
     // 협력
     // 컨트롤러가 서비스에게 라이더 위치 저장하라고 요청
