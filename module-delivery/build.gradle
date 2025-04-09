@@ -8,6 +8,7 @@ dependencies {
     implementation 'org.springframework.security:spring-security-crypto'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.18.0'
 
 
     testImplementation 'com.h2database:h2'
