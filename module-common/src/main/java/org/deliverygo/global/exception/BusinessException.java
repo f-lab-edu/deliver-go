@@ -1,16 +1,18 @@
 package org.deliverygo.global.exception;
 
-public abstract class BusinessException extends RuntimeException {
+import lombok.Getter;
 
-    public BusinessException(String message) {
-        super(message);
+@Getter
+public class BusinessException extends RuntimeException {
+    private final ErrorType errorType;
+
+    public BusinessException(ErrorType errorType) {
+        super(errorType.getMessage());
+        this.errorType = errorType;
     }
 
-    public BusinessException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public BusinessException(Throwable cause) {
-        super(cause);
+    public BusinessException(ErrorType errorType, Throwable cause) {
+        super(errorType.getMessage(), cause);
+        this.errorType = errorType;
     }
 }

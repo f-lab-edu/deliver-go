@@ -12,24 +12,24 @@ public record GoogleEtaRequest(
 //    private String departureTime; // ISO 형식 e.g. "2025-04-09T09:00:00Z"
 
     public static GoogleEtaRequest of(SaveDeliveryLocationRequest request) {
-        return new GoogleEtaRequest();
+        return new GoogleEtaRequest(new Origin(
+            new Location(new LatLng(request.riderLocation().latitude(), request.riderLocation().longitude()))),
+            new Destination(
+                new Location(new LatLng(request.riderLocation().latitude(), request.riderLocation().longitude()))),
+            "DRIVE",
+            "TRAFFIC_AWARE",
+            "2025-04-10T14:30:00Z");
     }
 
-    public static class Origin {
-        private Location location;
-        // getter/setter
+    public record Origin(Location location) {
     }
 
-    public static class Destination {
-        private Location location;
+    public record Destination(Location location) {
     }
 
-    public static class Location {
-        private LatLng latLng;
+    public record Location(LatLng latLng) {
     }
 
-    public static class LatLng {
-        private double latitude;
-        private double longitude;
+    public record LatLng(double latitude, double longitude) {
     }
 }

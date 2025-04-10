@@ -1,6 +1,6 @@
 package org.deliverygo.order.service;
 
-import org.deliverygo.exception.RestaurantCloseException;
+import org.deliverygo.global.exception.BusinessException;
 import org.deliverygo.login.constants.UserGrade;
 import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.UserRepository;
@@ -81,7 +81,7 @@ class OrderServiceTest {
         mockingRepository(createUser(), createCloseRestaurant(createUser()));
 
         //then
-        assertThrows(RestaurantCloseException.class, () -> orderService.order(orderCreateRequest));
+        assertThrows(BusinessException.class, () -> orderService.order(orderCreateRequest));
     }
 
     private User createUser() {
