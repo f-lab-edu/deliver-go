@@ -24,15 +24,13 @@ public class GoogleDirectionClient {
 
     @PostConstruct
     void init() {
-        System.out.println("webClient = " + webClient);
         try (InputStream serviceAccountStream =  getClass().getClassLoader().getResourceAsStream("fifth-howl-171112-c4473ce9455a.json")) {
             GoogleCredentials credentials = GoogleCredentials
                 .fromStream(serviceAccountStream)
-                .createScoped("https://www.googleapis.com/auth/maps-platform.routes");
+                .createScoped("https://www.googleapis.com/auth/cloud-platform");
 
             credentials.refreshIfExpired();
             accessToken = credentials.getAccessToken().getTokenValue();
-            System.out.println("credentials = " + accessToken);
         } catch (IOException e) {
             e.printStackTrace();
         }
