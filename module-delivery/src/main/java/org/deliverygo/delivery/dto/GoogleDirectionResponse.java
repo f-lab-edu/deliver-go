@@ -4,26 +4,22 @@ import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class GoogleDirectionResponse {
     private List<Route> routes;
 
     public long getEtaInSeconds() {
         if (routes != null && !routes.isEmpty()) {
-            Duration duration = routes.get(0).getDuration();
-            return duration != null ? duration.getSeconds() : 0;
+            String duration = routes.getFirst().duration; // 예: "149s"
+            if (duration != null && duration.endsWith("s")) {
+                return Long.parseLong(duration.replace("s", ""));
+            }
         }
-        return 0;
+        return 0L;
     }
 
     @Getter
     public static class Route {
-        private Duration duration;
-        // getter/setter
-    }
-
-    @Getter
-    public static class Duration {
-        private long seconds;
-        // getter/setter
+        private String duration;
     }
 }
