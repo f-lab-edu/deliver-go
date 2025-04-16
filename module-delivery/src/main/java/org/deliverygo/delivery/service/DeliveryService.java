@@ -26,7 +26,9 @@ public class DeliveryService {
 
         googleDirectionClient.getEta(googleEtaRequest)
             .thenAccept(result ->
-                riderRepository.save(Rider.of(request, result.getEtaInSeconds())))
+            {
+                riderRepository.save(Rider.of(request, result.getEtaInSeconds()));
+            })
             .exceptionally(e -> {
                 throw new BusinessException(GOOGLE_API_ERROR, e);
             });

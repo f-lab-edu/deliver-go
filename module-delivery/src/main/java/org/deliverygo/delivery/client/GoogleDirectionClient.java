@@ -40,6 +40,7 @@ public class GoogleDirectionClient {
         return webClient.post()
             .uri("https://routes.googleapis.com/directions/v2:computeRoutes")
             .header(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .header("X-Goog-FieldMask", "routes.duration")
             .header("Authorization", "Bearer " + accessToken)
             .bodyValue(googleEtaRequest)
             .retrieve()
