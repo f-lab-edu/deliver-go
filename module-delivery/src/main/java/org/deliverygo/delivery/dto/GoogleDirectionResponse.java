@@ -10,7 +10,7 @@ public class GoogleDirectionResponse {
 
     public long getEtaInSeconds() {
         if (routes != null && !routes.isEmpty()) {
-            String duration = routes.getFirst().duration; // 예: "149s"
+            String duration = routes.getFirst().duration;
             if (duration != null && duration.endsWith("s")) {
                 return Long.parseLong(duration.replace("s", ""));
             }

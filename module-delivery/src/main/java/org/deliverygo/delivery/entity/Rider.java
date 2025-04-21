@@ -16,7 +16,6 @@ public class Rider {
     private Location deliveryLocation;
     private Long eta;
 
-
     private Rider(String name, Location riderLocation, Location deliveryLocation, Long eta) {
         this.name = name;
         this.riderLocation = riderLocation;
