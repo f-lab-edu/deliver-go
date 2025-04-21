@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.deliverygo.delivery.dto.GoogleDirectionResponse;
 import org.deliverygo.delivery.dto.GoogleEtaRequest;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class GoogleDirectionClient {
 
     private final WebClient webClient;
@@ -32,7 +34,7 @@ public class GoogleDirectionClient {
             credentials.refreshIfExpired();
             accessToken = credentials.getAccessToken().getTokenValue();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Google 서비스 계정 인증 파일 읽기 중 예외가 발생했습니다.", e);
         }
     }
 
