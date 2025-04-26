@@ -1,7 +1,7 @@
 package org.deliverygo.order.service;
 
 import lombok.RequiredArgsConstructor;
-import org.deliverygo.exception.RestaurantCloseException;
+import org.deliverygo.global.exception.BusinessException;
 import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.UserRepository;
 import org.deliverygo.order.dto.OrderCreateRequest;
@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.deliverygo.global.exception.ErrorType.*;
 import static org.deliverygo.order.dto.OrderCreateRequest.*;
 
 @Service
@@ -51,7 +52,7 @@ public class OrderService {
 
     private void isOpen(Restaurant restaurant) {
         if (!restaurant.isOpen()) {
-            throw new RestaurantCloseException("음식점 " + restaurant.getName() + "가(이) 영업중인 상태가 아닙니다.");
+            throw new BusinessException(RESTAURANT_CLOSE);
         }
     }
 

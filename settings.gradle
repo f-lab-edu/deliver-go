@@ -5,3 +5,5 @@ include 'module-auth'
 include 'module-user'
 include 'module-order'
 include 'module-common'
+include 'module-delivery'
+
