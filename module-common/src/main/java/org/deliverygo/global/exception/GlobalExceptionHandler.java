@@ -32,10 +32,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiResponse<ErrorResponse>> handleBusinessException(BusinessException ex) {
+    public ResponseEntity<ApiResponse<ErrorType>> handleBusinessException(BusinessException ex) {
         ErrorType errorType = ex.getErrorType();
         return ResponseEntity
             .status(errorType.getStatus())
-            .body(ApiResponse.error(ErrorResponse.of(errorType.getMessage())));
+            .body(ApiResponse.error(errorType));
     }
 }
