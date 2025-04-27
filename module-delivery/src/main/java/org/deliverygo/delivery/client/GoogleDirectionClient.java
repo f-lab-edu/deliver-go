@@ -12,8 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import static java.time.Duration.*;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static reactor.util.retry.Retry.*;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +29,8 @@ public class GoogleDirectionClient {
 
     @PostConstruct
     void init() {
-        try (InputStream serviceAccountStream =  getClass().getClassLoader().getResourceAsStream("fifth-howl-171112-c4473ce9455a.json")) {
+        try (InputStream serviceAccountStream = getClass().getClassLoader()
+            .getResourceAsStream("fifth-howl-171112-c4473ce9455a.json")) {
             GoogleCredentials credentials = GoogleCredentials
                 .fromStream(serviceAccountStream)
                 .createScoped("https://www.googleapis.com/auth/cloud-platform");
@@ -47,6 +51,14 @@ public class GoogleDirectionClient {
             .bodyValue(googleEtaRequest)
             .retrieve()
             .bodyToMono(GoogleDirectionResponse.class)
+            .retryWhen(backoff(3, ofSeconds(1))
+                .maxBackoff(ofSeconds(5))
+                .filter(throwable -> {
+                    if (throwable instanceof WebClientResponseException e) {
+                        return e.getStatusCode().is4xxClientError();
+                    }
+                    return false;
+                }))
             .toFuture();
     }
 }
