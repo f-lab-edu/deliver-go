@@ -26,4 +26,8 @@ public class Rider {
     public static Rider of(SaveDeliveryLocationRequest request, Long eta) {
         return new Rider(request.riderName(), request.riderLocation(), request.deliveryLocation(), eta);
     }
+
+    public static Rider of(SaveDeliveryLocationRequest request) {
+        return new Rider(request.riderName(), request.riderLocation(), request.deliveryLocation(), null);
+    }
 }

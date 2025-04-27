@@ -7,3 +7,16 @@ spring:
       username: admin
       password: admin123
       authentication-database: admin
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      google-direction:
+        register-health-indicator: true
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 2
+        slow-call-duration-threshold: 2s
+        slow-call-rate-threshold: 50
