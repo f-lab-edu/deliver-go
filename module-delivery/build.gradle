@@ -16,4 +16,5 @@ dependencies {
     testImplementation 'com.h2database:h2'
     testImplementation(project(":main-app"))
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
 }

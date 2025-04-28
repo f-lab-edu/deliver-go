@@ -44,7 +44,7 @@ public class GoogleDirectionClient {
 
     public CompletableFuture<GoogleDirectionResponse> getEta(GoogleEtaRequest googleEtaRequest) {
         return webClient.post()
-            .uri("https://routes.googleapis.co1m/directions/v2:computeRoutes")
+            .uri("/directions/v2:computeRoutes")
             .header(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .header("X-Goog-FieldMask", "routes.duration")
             .header("Authorization", "Bearer " + accessToken)

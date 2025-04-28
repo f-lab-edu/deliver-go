@@ -16,9 +16,10 @@ import static org.springframework.web.reactive.function.client.WebClient.Builder
 public class WebClientConfig {
 
     @Bean
-    public WebClient webClient(Builder builder) {
+    public WebClient googleWebClient(Builder builder) {
         return builder
             .defaultHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .baseUrl("https://routes.googleapis.com")
             .clientConnector(new ReactorClientHttpConnector(
                 HttpClient.create()
                     .option(CONNECT_TIMEOUT_MILLIS, 2000)
