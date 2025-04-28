@@ -66,7 +66,7 @@ class GoogleDirectionClientTest {
 
         //then
         GoogleDirectionResponse response = future.get();
-        assertEquals(response.getEtaInSeconds(), 3600);
+        assertEquals(3600, response.getEtaInSeconds());
     }
 
     private  GoogleEtaRequest createRequest() {
