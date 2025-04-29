@@ -1,5 +1,6 @@
 package org.deliverygo.delivery.client;
 
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.deliverygo.delivery.dto.GoogleDirectionResponse;
@@ -12,13 +13,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import static java.time.Duration.ofSeconds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static reactor.util.retry.Retry.backoff;
 
-class GoogleDirectionClientTest {
+class GoogleDirectionClientRetryTest {
 
     MockWebServer mockWebServer;
+
     GoogleDirectionClient googleDirectionClient;
 
     @BeforeEach
@@ -30,7 +34,8 @@ class GoogleDirectionClientTest {
             .baseUrl(mockWebServer.url("/").toString())
             .build();
 
-        googleDirectionClient = new GoogleDirectionClient(webClient);
+        googleDirectionClient = new GoogleDirectionClient(webClient,
+            backoff(3, ofSeconds(1)).maxBackoff(ofSeconds(5)));
     }
 
     @AfterEach

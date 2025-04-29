@@ -6,9 +6,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.deliverygo.delivery.dto.GoogleDirectionResponse;
 import org.deliverygo.delivery.dto.GoogleEtaRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.util.retry.RetryBackoffSpec;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +26,8 @@ import static reactor.util.retry.Retry.backoff;
 public class GoogleDirectionClient {
 
     private final WebClient webClient;
+
+    private final RetryBackoffSpec googleWebClientBackOff;
 
     private String accessToken;
 
@@ -51,7 +55,7 @@ public class GoogleDirectionClient {
             .bodyValue(googleEtaRequest)
             .retrieve()
             .bodyToMono(GoogleDirectionResponse.class)
-            .retryWhen(backoff(3, ofSeconds(1)).maxBackoff(ofSeconds(5)))
+            .retryWhen(googleWebClientBackOff)
             .toFuture();
     }
 }

@@ -10,8 +10,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'com.google.auth:google-auth-library-oauth2-http:1.18.0'
     implementation project(':module-common')
-    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.1.0'
-    implementation 'io.github.resilience4j:resilience4j-reactor:2.1.0'
 
     testImplementation 'com.h2database:h2'
     testImplementation(project(":main-app"))
