@@ -1,6 +1,5 @@
 package org.deliverygo.delivery.client;
 
-import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.deliverygo.delivery.dto.GoogleDirectionResponse;

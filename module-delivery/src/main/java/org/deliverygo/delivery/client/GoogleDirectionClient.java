@@ -1,12 +1,12 @@
 package org.deliverygo.delivery.client;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.deliverygo.delivery.dto.GoogleDirectionResponse;
 import org.deliverygo.delivery.dto.GoogleEtaRequest;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,9 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-import static java.time.Duration.ofSeconds;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static reactor.util.retry.Retry.backoff;
 
 @Component
 @RequiredArgsConstructor
@@ -45,7 +43,7 @@ public class GoogleDirectionClient {
             log.error("Google 서비스 계정 인증 파일 읽기 중 예외가 발생했습니다.", e);
         }
     }
-
+    @CircuitBreaker(name = "google-direction", fallbackMethod = "fallbackEta")
     public CompletableFuture<GoogleDirectionResponse> getEta(GoogleEtaRequest googleEtaRequest) {
         return webClient.post()
             .uri("/directions/v2:computeRoutes")
@@ -57,5 +55,10 @@ public class GoogleDirectionClient {
             .bodyToMono(GoogleDirectionResponse.class)
             .retryWhen(googleWebClientBackOff)
             .toFuture();
+    }
+
+    public CompletableFuture<GoogleDirectionResponse> fallbackEta(GoogleEtaRequest googleEtaRequest, Throwable e) {
+        log.error("google api 호출이 실패됐습니다.", e);
+        return CompletableFuture.completedFuture(null);
     }
 }
