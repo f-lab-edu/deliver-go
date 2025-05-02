@@ -1,0 +1,11 @@
+resilience4j:
+  circuitbreaker:
+    instances:
+      google-direction:
+        register-health-indicator: true
+        sliding-window-type: count_based
+        sliding-window-size: 5
+        failure-rate-threshold: 100
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 3s
+        permitted-number-of-calls-in-half-open-state: 1
