@@ -15,7 +15,7 @@ public class OrderSaveMessageListener {
 
     private final OrderEventProducer orderEventProducer;
 
-    @Async // EnableAsigc
+    @Async(value = "orderMessageExecutor")
     @TransactionalEventListener(phase = AFTER_COMMIT)
     public void publishMessage(OrderCreateEvent orderCreateEvent) {
         orderEventProducer.sendOrderCreate(orderCreateEvent);
