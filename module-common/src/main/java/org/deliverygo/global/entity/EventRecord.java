@@ -24,13 +24,14 @@ public class EventRecord {
     private Long id;
 
     @Enumerated(STRING)
+    @Column(nullable = false)
     private EventRecordStatus status;
 
-    @Column(name = "payload", columnDefinition = "json")
+    @Column(name = "payload", columnDefinition = "json", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
     private JsonNode payload;
 
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
