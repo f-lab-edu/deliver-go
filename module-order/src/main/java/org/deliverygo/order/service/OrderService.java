@@ -5,6 +5,7 @@ import static org.deliverygo.order.dto.OrderCreateRequest.MenuCreateRequest;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.deliverygo.global.dto.OutboxEvent;
 import org.deliverygo.global.exception.BusinessException;
 import org.deliverygo.login.entity.User;
 import org.deliverygo.login.repository.UserRepository;
@@ -43,7 +44,7 @@ public class OrderService {
 
         paymentService.payment(savedOrder);
 
-        orderEventService.publishSaveEvent(OrderCreateEventMapper.toDto(user, order));
+        orderEventService.publishSaveEvent(OutboxEvent.of(OrderCreateEventMapper.toDto(user, order)));
 
         return savedOrder.getId();
     }

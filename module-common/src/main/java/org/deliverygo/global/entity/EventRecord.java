@@ -1,14 +1,11 @@
 package org.deliverygo.global.entity;
 
-import static org.deliverygo.global.constants.EventRecordStatus.INIT;
+import static jakarta.persistence.EnumType.*;
+import static org.deliverygo.global.constants.EventRecordStatus.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +23,7 @@ public class EventRecord {
     @Column(name = "event_id")
     private Long id;
 
+    @Enumerated(STRING)
     private EventRecordStatus status;
 
     @Column(name = "payload", columnDefinition = "json")
@@ -46,6 +44,6 @@ public class EventRecord {
     }
 
     public static EventRecord of(JsonNode jsonNode) {
-        return new EventRecord(jsonNode, INIT);
+        return new EventRecord(jsonNode, READY);
     }
 }

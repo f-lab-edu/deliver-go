@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.deliverygo.global.dto.OrderCreateEvent;
 import org.deliverygo.global.kafka.KafkaEventProducer;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.CompletableFuture;
 
 @Component
 @RequiredArgsConstructor
@@ -15,10 +18,9 @@ public class OrderEventProducer {
 
     private final String TOPIC = "order-topic";
 
-    public void sendOrderCreate(OrderCreateEvent orderCreateEvent) {
-
+    public CompletableFuture<SendResult<String, OrderCreateEvent>> sendOrderCreate(OrderCreateEvent orderCreateEvent) {
         String kafkaKey = String.valueOf(orderCreateEvent.getOrderId());
-        kafkaEventProducer.send(TOPIC, kafkaKey, orderCreateEvent)
+        return kafkaEventProducer.send(TOPIC, kafkaKey, orderCreateEvent)
             .exceptionally(e -> {
                 log.error("이벤트 전송 실패: topic = {}, event = {}", TOPIC, orderCreateEvent, e);
                 sendToDlt(kafkaKey, orderCreateEvent);

@@ -4,6 +4,8 @@ import static org.springframework.transaction.event.TransactionPhase.BEFORE_COMM
 
 import lombok.RequiredArgsConstructor;
 import org.deliverygo.global.dto.OrderCreateEvent;
+import org.deliverygo.global.dto.OutboxEvent;
+import org.deliverygo.global.entity.EventRecord;
 import org.deliverygo.global.helper.EventRecordFactory;
 import org.deliverygo.global.repository.EventRecordRepository;
 import org.springframework.stereotype.Component;
@@ -17,7 +19,8 @@ public class OrderSaveRecordListener {
     private final EventRecordFactory eventRecordFactory;
 
     @TransactionalEventListener(phase = BEFORE_COMMIT)
-    public void saveRecord(OrderCreateEvent event) {
-        eventRecordRepository.save(eventRecordFactory.create(event));
+    public void saveRecord(OutboxEvent<OrderCreateEvent> event) {
+        EventRecord savedRecord = eventRecordRepository.save(eventRecordFactory.create(event));
+        event.assignEventId(savedRecord);
     }
 }
