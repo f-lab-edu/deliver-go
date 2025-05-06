@@ -18,6 +18,13 @@ public class Delivery {
     private Location deliveryLocation;
     private Long eta;
 
+    private Delivery(String id, String name, Location riderLocation, Location deliveryLocation, Long eta) {
+        this.name = name;
+        this.riderLocation = riderLocation;
+        this.deliveryLocation = deliveryLocation;
+        this.eta = eta;
+    }
+
     private Delivery(String name, Location riderLocation, Location deliveryLocation, Long eta) {
         this.name = name;
         this.riderLocation = riderLocation;
@@ -26,10 +33,10 @@ public class Delivery {
     }
 
     public static Delivery of(SaveDeliveryLocationRequest request, Long eta) {
-        return new Delivery(request.riderName(), request.riderLocation(), request.deliveryLocation(), eta);
+        return new Delivery(request.deliveryId() ,request.riderName(), request.riderLocation(), request.deliveryLocation(), eta);
     }
 
     public static Delivery of(SaveDeliveryLocationRequest request) {
-        return new Delivery(request.riderName(), request.riderLocation(), request.deliveryLocation(), null);
+        return new Delivery(request.deliveryId(), request.riderName(), request.riderLocation(), request.deliveryLocation(), null);
     }
 }

@@ -3,6 +3,8 @@ package org.deliverygo.delivery.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.deliverygo.delivery.client.GoogleDirectionClient;
+import org.deliverygo.delivery.dto.DeliveryInfoRequest;
+import org.deliverygo.delivery.dto.DeliveryInfoResponse;
 import org.deliverygo.delivery.dto.GoogleEtaRequest;
 import org.deliverygo.delivery.dto.SaveDeliveryLocationRequest;
 import org.deliverygo.delivery.entity.Delivery;
@@ -20,7 +22,6 @@ public class DeliveryService {
 
     public void saveDeliveryLocation(SaveDeliveryLocationRequest request) {
         GoogleEtaRequest googleEtaRequest = GoogleEtaRequest.of(request);
-        // 매번 저장하는데 음,,  최초 저장
         googleDirectionClient.getEta(googleEtaRequest)
             .thenAccept(result ->
                 deliveryRepository.save(Delivery.of(request, result.getEtaInSeconds())))
@@ -31,8 +32,8 @@ public class DeliveryService {
             });
     }
 
-//    public DeliveryInfoResponse getDeliveryInfo(DeliveryInfoRequest deliveryInfoRequest) {
-//        Delivery rider = deliveryRepository.findById(deliveryInfoRequest.getDeliveryId());
-//        return DeliveryInfoResponse.from(rider);
-//    }
+    public DeliveryInfoResponse getDeliveryInfo(DeliveryInfoRequest deliveryInfoRequest) {
+        Delivery rider = deliveryRepository.findById(deliveryInfoRequest.deliveryId()).orElseThrow();
+        return DeliveryInfoResponse.from(rider);
+    }
 }
