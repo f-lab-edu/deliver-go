@@ -1,13 +1,15 @@
 package org.deliverygo.delivery.entity;
 
 
+import lombok.Getter;
 import org.deliverygo.delivery.dto.Location;
 import org.deliverygo.delivery.dto.SaveDeliveryLocationRequest;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "rider")
-public class Rider {
+@Document(collection = "delivery")
+@Getter
+public class Delivery {
 
     @Id
     private String id;
@@ -16,18 +18,18 @@ public class Rider {
     private Location deliveryLocation;
     private Long eta;
 
-    private Rider(String name, Location riderLocation, Location deliveryLocation, Long eta) {
+    private Delivery(String name, Location riderLocation, Location deliveryLocation, Long eta) {
         this.name = name;
         this.riderLocation = riderLocation;
         this.deliveryLocation = deliveryLocation;
         this.eta = eta;
     }
 
-    public static Rider of(SaveDeliveryLocationRequest request, Long eta) {
-        return new Rider(request.riderName(), request.riderLocation(), request.deliveryLocation(), eta);
+    public static Delivery of(SaveDeliveryLocationRequest request, Long eta) {
+        return new Delivery(request.riderName(), request.riderLocation(), request.deliveryLocation(), eta);
     }
 
-    public static Rider of(SaveDeliveryLocationRequest request) {
-        return new Rider(request.riderName(), request.riderLocation(), request.deliveryLocation(), null);
+    public static Delivery of(SaveDeliveryLocationRequest request) {
+        return new Delivery(request.riderName(), request.riderLocation(), request.deliveryLocation(), null);
     }
 }
