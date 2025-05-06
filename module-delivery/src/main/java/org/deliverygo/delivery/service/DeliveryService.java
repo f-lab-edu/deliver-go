@@ -33,7 +33,7 @@ public class DeliveryService {
     }
 
     public DeliveryInfoResponse getDeliveryInfo(DeliveryInfoRequest deliveryInfoRequest) {
-        Delivery rider = deliveryRepository.findById(deliveryInfoRequest.deliveryId()).orElseThrow();
-        return DeliveryInfoResponse.from(rider);
+        Delivery delivery = deliveryRepository.findById(deliveryInfoRequest.deliveryId()).orElseThrow();
+        return DeliveryInfoResponse.from(delivery);
     }
 }

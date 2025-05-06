@@ -2,12 +2,14 @@ package org.deliverygo.delivery.entity;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.deliverygo.delivery.dto.Location;
 import org.deliverygo.delivery.dto.SaveDeliveryLocationRequest;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "delivery")
+@NoArgsConstructor
 @Getter
 public class Delivery {
 
@@ -19,6 +21,7 @@ public class Delivery {
     private Long eta;
 
     private Delivery(String id, String name, Location riderLocation, Location deliveryLocation, Long eta) {
+        this.id = id;
         this.name = name;
         this.riderLocation = riderLocation;
         this.deliveryLocation = deliveryLocation;

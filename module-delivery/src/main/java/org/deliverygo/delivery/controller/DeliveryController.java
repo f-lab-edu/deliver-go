@@ -19,7 +19,7 @@ public class DeliveryController {
         deliveryService.saveDeliveryLocation(request);
     }
 
-    @GetMapping("/delivery/{deliveryId}")
+    @GetMapping("/delivery/{deliveryId}/location")
     public DeliveryInfoResponse getDeliveryInfo(@PathVariable("deliveryId") String deliveryId) {
         return deliveryService.getDeliveryInfo(DeliveryInfoRequest.of(deliveryId));
     }
