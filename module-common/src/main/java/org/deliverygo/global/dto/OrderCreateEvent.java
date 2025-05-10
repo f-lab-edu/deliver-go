@@ -1,6 +1,9 @@
 package org.deliverygo.global.dto;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.deliverygo.global.constants.OrderStatus;
+import org.deliverygo.global.entity.EventRecord;
 
 public record OrderCreateEvent(
     UserSummary userSummary,
@@ -13,6 +16,13 @@ public record OrderCreateEvent(
 
     public static OrderCreateEvent of(UserSummary userSummary, OrderSummary orderSummary) {
         return new OrderCreateEvent(userSummary, orderSummary);
+    }
+
+    public static OrderCreateEvent of(ObjectMapper objectMapper, EventRecord record) {
+        OutboxEvent<OrderCreateEvent> outboxEvent = objectMapper.convertValue(
+            record.getPayload(), new TypeReference<>() {
+            });
+        return outboxEvent.getPayload();
     }
 
     public record UserSummary(
